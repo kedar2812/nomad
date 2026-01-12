@@ -2,10 +2,10 @@ import React from 'react';
 
 export default function Header() {
     return (
-        <header className="fixed top-0 left-20 right-0 h-16 bg-stone-900/90 backdrop-blur-md border-b border-stone-800 flex items-center justify-between px-8 z-40">
+        <header className="fixed top-4 left-24 right-8 h-16 rounded-2xl bg-stone-900/40 backdrop-blur-xl border border-white/5 flex items-center justify-between px-8 z-40 shadow-xl shadow-black/20 transition-all duration-300">
             <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-orange-200 to-amber-500 bg-clip-text text-transparent">nomad</h1>
-                <p className="text-xs text-stone-500 font-medium tracking-wider uppercase">Space Management</p>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-200 via-amber-200 to-amber-500 bg-clip-text text-transparent drop-shadow-sm">nomad</h1>
+                <p className="text-[10px] text-stone-400 font-medium tracking-[0.2em] uppercase opacity-80">Space Management</p>
             </div>
 
             <div className="flex items-center gap-4">

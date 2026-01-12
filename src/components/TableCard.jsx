@@ -42,21 +42,27 @@ export default function TableCard({ table, onClick }) {
         <div
             onClick={() => onClick(table)}
             className={`
-        relative p-4 rounded-2xl border-2 transition-all cursor-pointer hover:-translate-y-1 hover:shadow-lg
+        relative p-6 rounded-2xl border transition-all duration-300 cursor-pointer group
+        hover:-translate-y-1 hover:shadow-2xl
         ${isOccupied
-                    ? isUrgent ? 'bg-red-950/20 border-red-500/50 hover:border-red-500' : 'bg-stone-800/50 border-orange-500/30 hover:border-orange-500'
-                    : 'bg-stone-900 border-stone-800 hover:border-stone-600 hover:bg-stone-800'
+                    ? isUrgent
+                        ? 'bg-rose-950/30 border-rose-500/50 hover:shadow-rose-900/50 hover:border-rose-400'
+                        : 'bg-orange-950/20 border-orange-500/30 hover:shadow-orange-900/40 hover:border-orange-400'
+                    : 'bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10 hover:shadow-white/5'
                 }
+        backdrop-blur-sm
       `}
         >
-            <div className="flex justify-between items-start mb-4">
-                <h3 className={`text-2xl font-bold ${isOccupied ? 'text-orange-400' : 'text-stone-600'}`}>
+            <div className="flex justify-between items-start mb-6">
+                <h3 className={`text-2xl font-bold tracking-tight ${isOccupied ? 'text-orange-100 drop-shadow-[0_0_10px_rgba(251,146,60,0.5)]' : 'text-stone-400 group-hover:text-stone-200 transition-colors'}`}>
                     {table.name}
                 </h3>
                 {isOccupied && (
                     <div className={`
-            px-2 py-1 rounded-md text-xs font-mono font-bold
-            ${isUrgent ? 'bg-red-500 text-white animate-pulse' : 'bg-orange-500/20 text-orange-400'}
+            px-3 py-1 rounded-full text-xs font-mono font-bold border
+            ${isUrgent
+                            ? 'bg-rose-500/20 border-rose-500 text-rose-200 animate-pulse-glow shadow-[0_0_15px_rgba(244,63,94,0.4)]'
+                            : 'bg-orange-500/10 border-orange-500/50 text-orange-300 shadow-[0_0_10px_rgba(249,115,22,0.2)]'}
           `}>
                         {formatTime(timeLeft)}
                     </div>
@@ -64,21 +70,25 @@ export default function TableCard({ table, onClick }) {
             </div>
 
             {isOccupied && session ? (
-                <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-stone-400 text-sm">
-                        <User size={14} />
-                        <span className="truncate">{session.customerName}</span>
+                <div className="space-y-3">
+                    <div className="flex items-center gap-3 text-stone-300 text-sm p-2 rounded-lg bg-black/20">
+                        <User size={16} className="text-orange-400" />
+                        <span className="truncate font-medium">{session.customerName}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-stone-500 text-xs font-mono">
-                        <Phone size={12} />
+                    <div className="flex items-center gap-3 text-stone-400 text-xs font-mono p-2 rounded-lg bg-black/20">
+                        <Phone size={14} className="text-stone-500" />
                         <span>{session.phone}</span>
                     </div>
                 </div>
             ) : (
-                <div className="h-12 flex items-center justify-center text-stone-700 text-sm">
+                <div className="h-20 flex items-center justify-center text-stone-600 text-sm font-medium tracking-widest uppercase opacity-50 group-hover:opacity-100 transition-opacity">
                     Available
                 </div>
             )}
+
+            {/* Hover Glow Effect */}
+            <div className={`absolute -inset-0.5 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 blur-xl -z-10 
+                ${isOccupied ? (isUrgent ? 'bg-rose-600/20' : 'bg-orange-600/20') : 'bg-white/5'}`} />
         </div>
     );
 }

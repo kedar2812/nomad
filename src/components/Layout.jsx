@@ -4,10 +4,10 @@ import Header from './Header';
 
 export default function Layout({ children }) {
     return (
-        <div className="min-h-screen bg-stone-950 text-stone-100 font-sans">
+        <div className="min-h-screen text-stone-100 font-sans">
             <Sidebar />
             <Header />
-            <main className="pl-20 pt-16 min-h-screen relative">
+            <main className="pl-24 pt-20 min-h-screen relative transition-all duration-300">
                 <div className="max-w-7xl mx-auto p-8">
                     {children}
                 </div>

@@ -18,16 +18,16 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 animate-fade-in">
             <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-semibold text-stone-200">Floor Plan</h2>
-                <div className="flex gap-4 text-sm text-stone-500">
-                    <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-stone-800 border border-stone-600"></div>
+                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-stone-100 to-stone-400 drop-shadow-sm tracking-tight">Floor Plan</h2>
+                <div className="flex gap-4 text-sm font-medium text-stone-400 bg-black/20 p-2 rounded-xl backdrop-blur-sm border border-white/5">
+                    <div className="flex items-center gap-2 px-2">
+                        <div className="w-2 h-2 rounded-full bg-stone-600 shadow-[0_0_8px_rgba(87,83,78,0.6)]"></div>
                         <span>Available</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-stone-800 border border-orange-500"></div>
+                    <div className="flex items-center gap-2 px-2 border-l border-white/10">
+                        <div className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></div>
                         <span>Occupied</span>
                     </div>
                 </div>
