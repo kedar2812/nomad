@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { useStore } from '../store/useStore';
-import { Clock, User, Phone, MoreVertical } from 'lucide-react';
-import { format } from 'date-fns';
+import { Clock, User, Phone, AlertCircle, WifiOff, Zap } from 'lucide-react';
+import { cn } from '../lib/utils';
+import { motion } from 'framer-motion';
 
 export default function TableCard({ table, onClick }) {
-    const sessions = useStore((state) => state.sessions);
-    const session = table.currentSessionId ? sessions[table.currentSessionId] : null;
+    const session = table.session;
     const [timeLeft, setTimeLeft] = useState(null);
+    const [statusColor, setStatusColor] = useState('green'); // green | yellow | red
+    const [isZombie, setIsZombie] = useState(false);
 
     useEffect(() => {
         if (!session || session.status !== 'active') {
             setTimeLeft(null);
+            setStatusColor('green');
+            setIsZombie(false);
             return;
         }
 
         const updateTimer = () => {
             const now = Date.now();
-            const end = session.startTime + session.duration;
-            const remaining = end - now;
-            setTimeLeft(remaining > 0 ? remaining : 0);
+            const elapsed = now - session.startTime;
+            const durationMs = session.duration * 60 * 60 * 1000;
+            const remaining = durationMs - elapsed;
+
+            // Traffic Light Logic
+            if (remaining <= 0) setStatusColor('red');
+            else if (remaining < 10 * 60 * 1000) setStatusColor('yellow');
+            else setStatusColor('green');
+
+            // Zombie Logic (> 5 Hours)
+            if (elapsed / 1000 / 60 > 300) setIsZombie(true);
+
+            setTimeLeft(remaining);
         };
 
         updateTimer();
@@ -28,67 +41,109 @@ export default function TableCard({ table, onClick }) {
 
     const formatTime = (ms) => {
         if (ms === null) return '--:--';
-        const totalSeconds = Math.floor(ms / 1000);
-        const h = Math.floor(totalSeconds / 3600);
-        const m = Math.floor((totalSeconds % 3600) / 60);
-        const s = totalSeconds % 60;
-        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        const absMs = Math.abs(ms);
+        const h = Math.floor(absMs / 3600000).toString().padStart(2, '0');
+        const m = Math.floor((absMs % 3600000) / 60000).toString().padStart(2, '0');
+        const s = Math.floor((absMs % 60000) / 1000).toString().padStart(2, '0');
+        return (ms < 0 ? '-' : '') + `${h}:${m}:${s}`;
     };
 
     const isOccupied = table.status === 'occupied';
-    const isUrgent = timeLeft !== null && timeLeft < 5 * 60 * 1000; // Less than 5 mins
+
+    // Glow Styles (No Glass)
+    const neonStyles = {
+        green: "border-neon-green shadow-[0_0_15px_rgba(0,255,148,0.4)] bg-stone-900",
+        yellow: "border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.4)] bg-stone-900",
+        red: "border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)] bg-stone-900 animate-pulse"
+    };
 
     return (
-        <div
+        <motion.div
+            layout
             onClick={() => onClick(table)}
-            className={`
-        relative p-6 rounded-2xl border transition-all duration-300 cursor-pointer group
-        hover:-translate-y-1 hover:shadow-2xl
-        ${isOccupied
-                    ? isUrgent
-                        ? 'bg-rose-950/30 border-rose-500/50 hover:shadow-rose-900/50 hover:border-rose-400'
-                        : 'bg-orange-950/20 border-orange-500/30 hover:shadow-orange-900/40 hover:border-orange-400'
-                    : 'bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10 hover:shadow-white/5'
-                }
-        backdrop-blur-sm
-      `}
+            whileHover={{ scale: 1.02, y: -5 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className={cn(
+                "relative p-6 rounded-3xl border-2 transition-all duration-300 cursor-pointer overflow-hidden group",
+                isOccupied
+                    ? neonStyles[statusColor]
+                    : "bg-stone-900/50 border-stone-800 hover:border-stone-700 hover:bg-stone-800"
+            )}
         >
+            {/* Sync Warning */}
+            {isOccupied && session && !session.synced && (
+                <div className="absolute top-4 right-4 z-10" title="Offline">
+                    <WifiOff className="text-orange-400/80 drop-shadow-[0_0_5px_rgba(249,115,22,0.5)]" size={16} />
+                </div>
+            )}
+
             <div className="flex justify-between items-start mb-6">
-                <h3 className={`text-2xl font-bold tracking-tight ${isOccupied ? 'text-orange-100 drop-shadow-[0_0_10px_rgba(251,146,60,0.5)]' : 'text-stone-400 group-hover:text-stone-200 transition-colors'}`}>
+                <h3 className={cn(
+                    "text-3xl font-black tracking-tighter",
+                    isOccupied ? "text-white drop-shadow-md" : "text-stone-500 group-hover:text-stone-300"
+                )}>
                     {table.name}
                 </h3>
+
                 {isOccupied && (
-                    <div className={`
-            px-3 py-1 rounded-full text-xs font-mono font-bold border
-            ${isUrgent
-                            ? 'bg-rose-500/20 border-rose-500 text-rose-200 animate-pulse-glow shadow-[0_0_15px_rgba(244,63,94,0.4)]'
-                            : 'bg-orange-500/10 border-orange-500/50 text-orange-300 shadow-[0_0_10px_rgba(249,115,22,0.2)]'}
-          `}>
+                    <div className={cn(
+                        "px-3 py-1 rounded-full text-xs font-mono font-bold border shadow-lg flex items-center gap-2 backdrop-blur-md",
+                        statusColor === 'green' && "bg-neon-green/10 text-neon-green border-neon-green/30",
+                        statusColor === 'yellow' && "bg-yellow-400/10 text-yellow-400 border-yellow-400/30",
+                        statusColor === 'red' && "bg-red-500/10 text-red-500 border-red-500/30"
+                    )}>
+                        <Clock size={12} strokeWidth={3} />
                         {formatTime(timeLeft)}
                     </div>
                 )}
             </div>
 
             {isOccupied && session ? (
-                <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-stone-300 text-sm p-2 rounded-lg bg-black/20">
-                        <User size={16} className="text-orange-400" />
-                        <span className="truncate font-medium">{session.customerName}</span>
+                <div className="space-y-4 relative z-10">
+                    <div className="flex items-center gap-3 text-stone-100 p-3 rounded-2xl bg-gradient-to-r from-white/10 to-transparent border border-white/5 backdrop-blur-md">
+                        <div className={cn(
+                            "p-2 rounded-xl shadow-inner",
+                            statusColor === 'red' ? "bg-red-500/20 text-red-400" : "bg-neon-blue/20 text-neon-blue"
+                        )}>
+                            <User size={18} strokeWidth={2.5} />
+                        </div>
+                        <span className="font-bold truncate text-sm">{session.customerName}</span>
                     </div>
-                    <div className="flex items-center gap-3 text-stone-400 text-xs font-mono p-2 rounded-lg bg-black/20">
-                        <Phone size={14} className="text-stone-500" />
-                        <span>{session.phone}</span>
-                    </div>
+
+                    {session.phone && (
+                        <div className="flex items-center gap-2 text-stone-400 px-2">
+                            <Phone size={12} className="opacity-50" />
+                            <span className="text-xs font-mono tracking-wider opacity-70">{session.phone}</span>
+                        </div>
+                    )}
                 </div>
             ) : (
-                <div className="h-20 flex items-center justify-center text-stone-600 text-sm font-medium tracking-widest uppercase opacity-50 group-hover:opacity-100 transition-opacity">
-                    Available
+                <div className="h-28 flex flex-col items-center justify-center gap-3 text-stone-600 group-hover:text-stone-400 transition-colors">
+                    <div className="w-12 h-1.5 rounded-full bg-current opacity-30" />
+                    <span className="text-[10px] font-black tracking-[0.2em] uppercase">Open</span>
                 </div>
             )}
 
-            {/* Hover Glow Effect */}
-            <div className={`absolute -inset-0.5 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 blur-xl -z-10 
-                ${isOccupied ? (isUrgent ? 'bg-rose-600/20' : 'bg-orange-600/20') : 'bg-white/5'}`} />
-        </div>
+            {/* Glowing Accent Gradient */}
+            {isOccupied && (
+                <div className={cn(
+                    "absolute -bottom-20 -right-20 w-64 h-64 rounded-full blur-[80px] opacity-40 pointer-events-none mix-blend-screen transition-colors duration-1000",
+                    statusColor === 'green' && "bg-neon-green",
+                    statusColor === 'yellow' && "bg-yellow-400",
+                    statusColor === 'red' && "bg-red-600"
+                )} />
+            )}
+
+            {/* Zombie Overlay */}
+            {isZombie && (
+                <div className="absolute inset-x-0 bottom-0 bg-red-600/90 py-1.5 text-center shadow-[0_-5px_20px_rgba(220,38,38,0.5)]">
+                    <span className="text-[10px] font-black text-white uppercase tracking-widest flex items-center justify-center gap-2 animate-pulse">
+                        <AlertCircle size={12} /> Verify Presence
+                    </span>
+                </div>
+            )}
+        </motion.div>
     );
 }
+

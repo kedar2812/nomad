@@ -5,8 +5,8 @@
 @layer base {
   body {
     @apply bg-[#0c0a09] text-stone-200 antialiased min-h-screen selection:bg-orange-500/30;
-    background-image: 
-      radial-gradient(circle at 15% 50%, rgba(255, 115, 0, 0.08), transparent 25%), 
+    background-image:
+      radial-gradient(circle at 15% 50%, rgba(255, 115, 0, 0.08), transparent 25%),
       radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.08), transparent 25%);
     background-attachment: fixed;
   }
@@ -16,14 +16,17 @@
     width: 8px;
     height: 8px;
   }
+
   ::-webkit-scrollbar-track {
-    background: transparent; 
+    background: transparent;
   }
+
   ::-webkit-scrollbar-thumb {
-    background: #44403c; 
+    background: #44403c;
     border-radius: 4px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
-    background: #57534e; 
+    background: #57534e;
   }
 }
