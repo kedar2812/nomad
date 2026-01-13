@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Clock, User, Phone, AlertCircle, WifiOff, Zap } from 'lucide-react';
+import { Clock, User, Phone, AlertCircle, WifiOff, Pause } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion } from 'framer-motion';
+import { TABLE_TYPE_ICONS, ATTRIBUTE_ICONS } from '../hooks/useTables';
 
 export default function TableCard({ table, onClick }) {
     const session = table.session;
@@ -19,7 +20,10 @@ export default function TableCard({ table, onClick }) {
 
         const updateTimer = () => {
             const now = Date.now();
-            const elapsed = now - session.startTime;
+            // Subtract paused time from elapsed calculation
+            const totalPausedMs = session.totalPausedMs || 0;
+            const currentPauseMs = session.isPaused ? (now - (session.pausedAt || now)) : 0;
+            const elapsed = now - session.startTime - totalPausedMs - currentPauseMs;
             const durationMs = session.duration * 60 * 60 * 1000;
             const remaining = durationMs - elapsed;
 
@@ -57,6 +61,9 @@ export default function TableCard({ table, onClick }) {
         red: "border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)] bg-stone-900 animate-pulse"
     };
 
+    // Get type icon
+    const typeInfo = TABLE_TYPE_ICONS[table.type] || { icon: '🪑', label: 'Seat' };
+
     return (
         <motion.div
             layout
@@ -71,30 +78,58 @@ export default function TableCard({ table, onClick }) {
                     : "bg-stone-900/50 border-stone-800 hover:border-stone-700 hover:bg-stone-800"
             )}
         >
-            {/* Sync Warning */}
-            {isOccupied && session && !session.synced && (
-                <div className="absolute top-4 right-4 z-10" title="Offline">
-                    <WifiOff className="text-orange-400/80 drop-shadow-[0_0_5px_rgba(249,115,22,0.5)]" size={16} />
-                </div>
-            )}
+            {/* Attribute Icons - Top Right */}
+            <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5">
+                {/* Sync Warning */}
+                {isOccupied && session && !session.synced && (
+                    <div title="Offline">
+                        <WifiOff className="text-orange-400/80 drop-shadow-[0_0_5px_rgba(249,115,22,0.5)]" size={14} />
+                    </div>
+                )}
+                {/* Paused Indicator */}
+                {isOccupied && session?.isPaused && (
+                    <div title="Session Paused" className="text-yellow-400 animate-pulse">
+                        <Pause size={14} />
+                    </div>
+                )}
+                {/* Power Outlet */}
+                {table.hasPlug && (
+                    <span title={ATTRIBUTE_ICONS.hasPlug.label} className="text-sm opacity-60 hover:opacity-100">
+                        {ATTRIBUTE_ICONS.hasPlug.icon}
+                    </span>
+                )}
+                {/* Near Window */}
+                {table.nearWindow && (
+                    <span title={ATTRIBUTE_ICONS.nearWindow.label} className="text-sm opacity-60 hover:opacity-100">
+                        {ATTRIBUTE_ICONS.nearWindow.icon}
+                    </span>
+                )}
+            </div>
 
             <div className="flex justify-between items-start mb-6">
-                <h3 className={cn(
-                    "text-3xl font-black tracking-tighter",
-                    isOccupied ? "text-white drop-shadow-md" : "text-stone-500 group-hover:text-stone-300"
-                )}>
-                    {table.name}
-                </h3>
+                <div className="flex items-center gap-2">
+                    <h3 className={cn(
+                        "text-3xl font-black tracking-tighter",
+                        isOccupied ? "text-white drop-shadow-md" : "text-stone-500 group-hover:text-stone-300"
+                    )}>
+                        {table.name}
+                    </h3>
+                    {/* Seat Type Icon */}
+                    <span title={typeInfo.label} className="text-lg opacity-50 group-hover:opacity-80">
+                        {typeInfo.icon}
+                    </span>
+                </div>
 
                 {isOccupied && (
                     <div className={cn(
                         "px-3 py-1 rounded-full text-xs font-mono font-bold border shadow-lg flex items-center gap-2 backdrop-blur-md",
+                        session?.isPaused && "opacity-50",
                         statusColor === 'green' && "bg-neon-green/10 text-neon-green border-neon-green/30",
                         statusColor === 'yellow' && "bg-yellow-400/10 text-yellow-400 border-yellow-400/30",
                         statusColor === 'red' && "bg-red-500/10 text-red-500 border-red-500/30"
                     )}>
                         <Clock size={12} strokeWidth={3} />
-                        {formatTime(timeLeft)}
+                        {session?.isPaused ? '⏸️' : formatTime(timeLeft)}
                     </div>
                 )}
             </div>
@@ -108,7 +143,15 @@ export default function TableCard({ table, onClick }) {
                         )}>
                             <User size={18} strokeWidth={2.5} />
                         </div>
-                        <span className="font-bold truncate text-sm">{session.customerName}</span>
+                        <div className="flex-1 min-w-0">
+                            <span className="font-bold truncate text-sm block">{session.customerName}</span>
+                            {/* Order count badge */}
+                            {(session.orders?.length || 0) > 0 && (
+                                <span className="text-xs text-orange-400">
+                                    🛒 {session.orders.length} item{session.orders.length > 1 ? 's' : ''}
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                     {session.phone && (
@@ -146,4 +189,3 @@ export default function TableCard({ table, onClick }) {
         </motion.div>
     );
 }
-

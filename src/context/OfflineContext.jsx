@@ -6,13 +6,24 @@ import { v4 as uuidv4 } from 'uuid';
 
 const OfflineContext = createContext();
 
+// Menu items configuration (can be fetched from backend later)
+export const MENU_ITEMS = [
+    { id: 'coffee-1', name: 'Espresso', price: 50, category: 'Coffee', emoji: '☕' },
+    { id: 'coffee-2', name: 'Cappuccino', price: 70, category: 'Coffee', emoji: '☕' },
+    { id: 'coffee-3', name: 'Latte', price: 80, category: 'Coffee', emoji: '🥛' },
+    { id: 'tea-1', name: 'Iced Tea', price: 60, category: 'Beverage', emoji: '🧋' },
+    { id: 'tea-2', name: 'Hot Tea', price: 40, category: 'Beverage', emoji: '🍵' },
+    { id: 'food-1', name: 'Club Sandwich', price: 120, category: 'Food', emoji: '🥪' },
+    { id: 'food-2', name: 'Veg Burger', price: 100, category: 'Food', emoji: '🍔' },
+    { id: 'snack-1', name: 'Brownie', price: 60, category: 'Snacks', emoji: '🍫' },
+    { id: 'snack-2', name: 'Cookie', price: 30, category: 'Snacks', emoji: '🍪' },
+];
+
 export const OfflineProvider = ({ children }) => {
-    // 1. Initialize Query Client
     const [queryClient] = useState(() => new QueryClient({
         defaultOptions: {
             queries: {
                 staleTime: 1000,
-                // Refetch local DB constantly to keep UI live
                 refetchInterval: 1000,
             },
         },
@@ -42,23 +53,20 @@ const OfflineLogicProvider = ({ children }) => {
         };
     }, []);
 
-    // 2. READ: Live Query from Dexie
+    // READ: Live Query from Dexie
     const { data: activeSessions = [] } = useQuery({
         queryKey: ['sessions'],
         queryFn: async () => {
-            // Return all sessions that are NOT 'completed' OR completed today (for history)
             return await db.sessions.toArray();
         },
     });
 
-    // 3. WRITE: Mutation to add Session (Local First -> Background Sync)
+    // WRITE: Add Session
     const addSessionMutation = useMutation({
         mutationFn: async (newSession) => {
-            // A. Save directly to Local DB (Instant UI update)
             await db.sessions.add({ ...newSession, synced: false });
             await logAction('create_session', { id: newSession.id });
 
-            // B. Try to Sync immediately if online
             if (syncService.isOnline()) {
                 try {
                     await syncService.pushSession(newSession);
@@ -73,33 +81,164 @@ const OfflineLogicProvider = ({ children }) => {
         },
     });
 
-    // 4. WRITE: Mutation to checkout
+    // WRITE: Checkout Session
     const checkoutMutation = useMutation({
         mutationFn: async ({ sessionId, endTime }) => {
             await db.sessions.update(sessionId, {
                 status: 'completed',
                 endTime: endTime,
-                synced: false // Needs to sync this update
+                synced: false
             });
             await logAction('checkout_session', { sessionId });
-            // Simple sync retry logic could go here
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['sessions']);
         }
     });
 
+    // WRITE: Add Order to Session
+    const addOrderMutation = useMutation({
+        mutationFn: async ({ sessionId, orderItem }) => {
+            const session = await db.sessions.get(sessionId);
+            if (!session) throw new Error('Session not found');
+
+            const existingOrders = session.orders || [];
+            const updatedOrders = [...existingOrders, {
+                ...orderItem,
+                orderId: uuidv4(),
+                addedAt: Date.now()
+            }];
+
+            await db.sessions.update(sessionId, {
+                orders: updatedOrders,
+                synced: false
+            });
+            await logAction('add_order', { sessionId, item: orderItem.name });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['sessions']);
+        }
+    });
+
+    // WRITE: Remove Order from Session
+    const removeOrderMutation = useMutation({
+        mutationFn: async ({ sessionId, orderId }) => {
+            const session = await db.sessions.get(sessionId);
+            if (!session) throw new Error('Session not found');
+
+            const updatedOrders = (session.orders || []).filter(o => o.orderId !== orderId);
+
+            await db.sessions.update(sessionId, {
+                orders: updatedOrders,
+                synced: false
+            });
+            await logAction('remove_order', { sessionId, orderId });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['sessions']);
+        }
+    });
+
+    // WRITE: Pause Session
+    const pauseSessionMutation = useMutation({
+        mutationFn: async ({ sessionId }) => {
+            const session = await db.sessions.get(sessionId);
+            if (!session) throw new Error('Session not found');
+            if (session.isPaused) return; // Already paused
+
+            await db.sessions.update(sessionId, {
+                isPaused: true,
+                pausedAt: Date.now(),
+                synced: false
+            });
+            await logAction('pause_session', { sessionId });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['sessions']);
+        }
+    });
+
+    // WRITE: Resume Session
+    const resumeSessionMutation = useMutation({
+        mutationFn: async ({ sessionId }) => {
+            const session = await db.sessions.get(sessionId);
+            if (!session) throw new Error('Session not found');
+            if (!session.isPaused) return; // Not paused
+
+            const pauseDuration = Date.now() - (session.pausedAt || Date.now());
+            const totalPausedMs = (session.totalPausedMs || 0) + pauseDuration;
+
+            await db.sessions.update(sessionId, {
+                isPaused: false,
+                pausedAt: null,
+                totalPausedMs: totalPausedMs,
+                synced: false
+            });
+            await logAction('resume_session', { sessionId, pausedFor: pauseDuration });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['sessions']);
+        }
+    });
 
     // Public API exposed to components
     const value = {
         isOnline,
         sessions: activeSessions,
+        menuItems: MENU_ITEMS,
+
+        // Session Management
         addSession: (sessionData) => {
             const id = uuidv4();
-            addSessionMutation.mutate({ ...sessionData, id, status: 'active', synced: false });
+            addSessionMutation.mutate({
+                ...sessionData,
+                id,
+                status: 'active',
+                orders: [],
+                isPaused: false,
+                pausedAt: null,
+                totalPausedMs: 0,
+                synced: false
+            });
         },
         checkoutSession: (sessionId) => {
             checkoutMutation.mutate({ sessionId, endTime: Date.now() });
+        },
+
+        // Order Management
+        addOrder: (sessionId, orderItem) => {
+            addOrderMutation.mutate({ sessionId, orderItem });
+        },
+        removeOrder: (sessionId, orderId) => {
+            removeOrderMutation.mutate({ sessionId, orderId });
+        },
+
+        // Pause/Resume
+        pauseSession: (sessionId) => {
+            pauseSessionMutation.mutate({ sessionId });
+        },
+        resumeSession: (sessionId) => {
+            resumeSessionMutation.mutate({ sessionId });
+        },
+
+        // Data Export/Import for Backup
+        exportData: async () => {
+            const sessions = await db.sessions.toArray();
+            const logs = await db.logs.toArray();
+            return JSON.stringify({ sessions, logs, exportedAt: Date.now() }, null, 2);
+        },
+        importData: async (jsonData) => {
+            const data = JSON.parse(jsonData);
+            if (data.sessions) {
+                await db.sessions.clear();
+                await db.sessions.bulkAdd(data.sessions);
+            }
+            if (data.logs) {
+                await db.logs.clear();
+                await db.logs.bulkAdd(data.logs);
+            }
+            await logAction('data_imported', { count: data.sessions?.length || 0 });
+            queryClient.invalidateQueries(['sessions']);
         }
     };
 
