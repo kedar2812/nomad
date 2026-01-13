@@ -54,11 +54,11 @@ export default function TableCard({ table, onClick }) {
 
     const isOccupied = table.status === 'occupied';
 
-    // Glow Styles (No Glass)
-    const neonStyles = {
-        green: "border-neon-green shadow-[0_0_15px_rgba(0,255,148,0.4)] bg-stone-900",
-        yellow: "border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.4)] bg-stone-900",
-        red: "border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)] bg-stone-900 animate-pulse"
+    // Light theme styles
+    const statusStyles = {
+        green: "border-emerald-400 shadow-lg shadow-emerald-100 bg-white",
+        yellow: "border-yellow-400 shadow-lg shadow-yellow-100 bg-white",
+        red: "border-red-400 shadow-lg shadow-red-100 bg-white animate-pulse"
     };
 
     // Get type icon
@@ -74,8 +74,8 @@ export default function TableCard({ table, onClick }) {
             className={cn(
                 "relative p-6 rounded-3xl border-2 transition-all duration-300 cursor-pointer overflow-hidden group",
                 isOccupied
-                    ? neonStyles[statusColor]
-                    : "bg-stone-900/50 border-stone-800 hover:border-stone-700 hover:bg-stone-800"
+                    ? statusStyles[statusColor]
+                    : "bg-white/70 border-stone-200 hover:border-stone-300 hover:bg-white hover:shadow-lg"
             )}
         >
             {/* Attribute Icons - Top Right */}
@@ -83,12 +83,12 @@ export default function TableCard({ table, onClick }) {
                 {/* Sync Warning */}
                 {isOccupied && session && !session.synced && (
                     <div title="Offline">
-                        <WifiOff className="text-orange-400/80 drop-shadow-[0_0_5px_rgba(249,115,22,0.5)]" size={14} />
+                        <WifiOff className="text-orange-500" size={14} />
                     </div>
                 )}
                 {/* Paused Indicator */}
                 {isOccupied && session?.isPaused && (
-                    <div title="Session Paused" className="text-yellow-400 animate-pulse">
+                    <div title="Session Paused" className="text-yellow-500 animate-pulse">
                         <Pause size={14} />
                     </div>
                 )}
@@ -110,7 +110,7 @@ export default function TableCard({ table, onClick }) {
                 <div className="flex items-center gap-2">
                     <h3 className={cn(
                         "text-3xl font-black tracking-tighter",
-                        isOccupied ? "text-white drop-shadow-md" : "text-stone-500 group-hover:text-stone-300"
+                        isOccupied ? "text-stone-800" : "text-stone-400 group-hover:text-stone-600"
                     )}>
                         {table.name}
                     </h3>
@@ -122,11 +122,11 @@ export default function TableCard({ table, onClick }) {
 
                 {isOccupied && (
                     <div className={cn(
-                        "px-3 py-1 rounded-full text-xs font-mono font-bold border shadow-lg flex items-center gap-2 backdrop-blur-md",
+                        "px-3 py-1 rounded-full text-xs font-mono font-bold border shadow-sm flex items-center gap-2",
                         session?.isPaused && "opacity-50",
-                        statusColor === 'green' && "bg-neon-green/10 text-neon-green border-neon-green/30",
-                        statusColor === 'yellow' && "bg-yellow-400/10 text-yellow-400 border-yellow-400/30",
-                        statusColor === 'red' && "bg-red-500/10 text-red-500 border-red-500/30"
+                        statusColor === 'green' && "bg-emerald-50 text-emerald-700 border-emerald-200",
+                        statusColor === 'yellow' && "bg-yellow-50 text-yellow-700 border-yellow-200",
+                        statusColor === 'red' && "bg-red-50 text-red-700 border-red-200"
                     )}>
                         <Clock size={12} strokeWidth={3} />
                         {session?.isPaused ? '⏸️' : formatTime(timeLeft)}
@@ -136,10 +136,10 @@ export default function TableCard({ table, onClick }) {
 
             {isOccupied && session ? (
                 <div className="space-y-4 relative z-10">
-                    <div className="flex items-center gap-3 text-stone-100 p-3 rounded-2xl bg-gradient-to-r from-white/10 to-transparent border border-white/5 backdrop-blur-md">
+                    <div className="flex items-center gap-3 text-stone-700 p-3 rounded-2xl bg-stone-50 border border-stone-100">
                         <div className={cn(
-                            "p-2 rounded-xl shadow-inner",
-                            statusColor === 'red' ? "bg-red-500/20 text-red-400" : "bg-neon-blue/20 text-neon-blue"
+                            "p-2 rounded-xl shadow-sm",
+                            statusColor === 'red' ? "bg-red-100 text-red-600" : "bg-emerald-100 text-emerald-600"
                         )}>
                             <User size={18} strokeWidth={2.5} />
                         </div>
@@ -147,7 +147,7 @@ export default function TableCard({ table, onClick }) {
                             <span className="font-bold truncate text-sm block">{session.customerName}</span>
                             {/* Order count badge */}
                             {(session.orders?.length || 0) > 0 && (
-                                <span className="text-xs text-orange-400">
+                                <span className="text-xs text-orange-600">
                                     🛒 {session.orders.length} item{session.orders.length > 1 ? 's' : ''}
                                 </span>
                             )}
@@ -155,32 +155,22 @@ export default function TableCard({ table, onClick }) {
                     </div>
 
                     {session.phone && (
-                        <div className="flex items-center gap-2 text-stone-400 px-2">
+                        <div className="flex items-center gap-2 text-stone-500 px-2">
                             <Phone size={12} className="opacity-50" />
-                            <span className="text-xs font-mono tracking-wider opacity-70">{session.phone}</span>
+                            <span className="text-xs font-mono tracking-wider">{session.phone}</span>
                         </div>
                     )}
                 </div>
             ) : (
-                <div className="h-28 flex flex-col items-center justify-center gap-3 text-stone-600 group-hover:text-stone-400 transition-colors">
+                <div className="h-28 flex flex-col items-center justify-center gap-3 text-stone-300 group-hover:text-stone-400 transition-colors">
                     <div className="w-12 h-1.5 rounded-full bg-current opacity-30" />
                     <span className="text-[10px] font-black tracking-[0.2em] uppercase">Open</span>
                 </div>
             )}
 
-            {/* Glowing Accent Gradient */}
-            {isOccupied && (
-                <div className={cn(
-                    "absolute -bottom-20 -right-20 w-64 h-64 rounded-full blur-[80px] opacity-40 pointer-events-none mix-blend-screen transition-colors duration-1000",
-                    statusColor === 'green' && "bg-neon-green",
-                    statusColor === 'yellow' && "bg-yellow-400",
-                    statusColor === 'red' && "bg-red-600"
-                )} />
-            )}
-
             {/* Zombie Overlay */}
             {isZombie && (
-                <div className="absolute inset-x-0 bottom-0 bg-red-600/90 py-1.5 text-center shadow-[0_-5px_20px_rgba(220,38,38,0.5)]">
+                <div className="absolute inset-x-0 bottom-0 bg-red-500 py-1.5 text-center shadow-lg">
                     <span className="text-[10px] font-black text-white uppercase tracking-widest flex items-center justify-center gap-2 animate-pulse">
                         <AlertCircle size={12} /> Verify Presence
                     </span>
