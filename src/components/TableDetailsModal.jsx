@@ -86,34 +86,34 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
 
     return createPortal(
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
-            <div className="w-full max-w-3xl bg-white/95 backdrop-blur-2xl border border-stone-200 rounded-2xl shadow-2xl relative flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+            <div className="w-full max-w-3xl bg-secondary/95 backdrop-blur-2xl border border-light rounded-2xl shadow-2xl relative flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
                 {/* Header */}
-                <div className="flex justify-between items-center p-6 border-b border-stone-200">
+                <div className="flex justify-between items-center p-6 border-b border-light">
                     <div>
-                        <h2 className="text-2xl font-bold text-stone-800 tracking-tight">{session.customerName}</h2>
+                        <h2 className="text-2xl font-bold text-primary tracking-tight">{session.customerName}</h2>
                         <div className="flex items-center gap-2 mt-1">
-                            <span className="text-orange-600 font-mono font-bold bg-orange-100 px-2 py-0.5 rounded text-sm">Table {table.name}</span>
+                            <span className="text-orange-600 font-mono font-bold bg-orange-100 dark:bg-orange-950 px-2 py-0.5 rounded text-sm">Table {table.name}</span>
                             {session.isPaused && (
-                                <span className="text-yellow-600 font-mono font-bold bg-yellow-100 px-2 py-0.5 rounded text-sm animate-pulse">
+                                <span className="text-yellow-600 dark:text-yellow-500 font-mono font-bold bg-yellow-100 dark:bg-yellow-950 px-2 py-0.5 rounded text-sm animate-pulse">
                                     ⏸️ PAUSED
                                 </span>
                             )}
                         </div>
                     </div>
-                    <button onClick={onClose} className="text-stone-400 hover:text-stone-600 transition-colors">
+                    <button onClick={onClose} className="text-tertiary hover:text-secondary transition-colors">
                         <X size={24} />
                     </button>
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="flex border-b border-stone-200">
+                <div className="flex border-b border-light">
                     <button
                         onClick={() => setActiveTab('details')}
                         className={cn(
                             "flex-1 py-3 text-sm font-medium transition-all",
                             activeTab === 'details'
                                 ? "text-orange-600 border-b-2 border-orange-500"
-                                : "text-stone-500 hover:text-stone-700"
+                                : "text-tertiary hover:text-secondary"
                         )}
                     >
                         <Clock size={16} className="inline mr-2" />
@@ -125,7 +125,7 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                             "flex-1 py-3 text-sm font-medium transition-all relative",
                             activeTab === 'orders'
                                 ? "text-orange-600 border-b-2 border-orange-500"
-                                : "text-stone-500 hover:text-stone-700"
+                                : "text-tertiary hover:text-secondary"
                         )}
                     >
                         <ShoppingBag size={16} className="inline mr-2" />
@@ -143,25 +143,25 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                     {activeTab === 'details' ? (
                         <div className="space-y-6">
                             {/* Session Info */}
-                            <div className="bg-stone-50 rounded-xl p-5 space-y-4 border border-stone-200">
+                            <div className="bg-tertiary rounded-xl p-5 space-y-4 border border-light">
                                 <div className="flex justify-between items-center text-sm">
-                                    <div className="flex items-center gap-2 text-stone-500">
+                                    <div className="flex items-center gap-2 text-tertiary">
                                         <Clock size={16} /> Booked Duration
                                     </div>
-                                    <span className="text-stone-800 font-bold">{session.duration} Hours</span>
+                                    <span className="text-primary font-bold">{session.duration} Hours</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
-                                    <div className="flex items-center gap-2 text-stone-500">
+                                    <div className="flex items-center gap-2 text-tertiary">
                                         <Clock size={16} /> Start Time
                                     </div>
-                                    <span className="text-stone-800 font-mono">{new Date(session.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                    <span className="text-primary font-mono">{new Date(session.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                 </div>
                                 {session.totalPausedMs > 0 && (
                                     <div className="flex justify-between items-center text-sm">
-                                        <div className="flex items-center gap-2 text-yellow-600">
+                                        <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-500">
                                             <Pause size={16} /> Total Paused
                                         </div>
-                                        <span className="text-yellow-700 font-mono">
+                                        <span className="text-yellow-700 dark:text-yellow-600 font-mono">
                                             {Math.round(session.totalPausedMs / 60000)} mins
                                         </span>
                                     </div>
@@ -169,18 +169,18 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                             </div>
 
                             {/* Bill Summary */}
-                            <div className="bg-stone-50 rounded-xl p-5 space-y-3 border border-stone-200">
+                            <div className="bg-tertiary rounded-xl p-5 space-y-3 border border-light">
                                 <div className="flex justify-between items-center text-sm">
-                                    <span className="text-stone-500">Time Charges</span>
-                                    <span className="text-stone-800">{formatCurrency(timePrice)}</span>
+                                    <span className="text-tertiary">Time Charges</span>
+                                    <span className="text-primary">{formatCurrency(timePrice)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
-                                    <span className="text-stone-500">Food & Beverages ({session.orders?.length || 0} items)</span>
-                                    <span className="text-stone-800">{formatCurrency(ordersTotal)}</span>
+                                    <span className="text-tertiary">Food & Beverages ({session.orders?.length || 0} items)</span>
+                                    <span className="text-primary">{formatCurrency(ordersTotal)}</span>
                                 </div>
-                                <div className="h-px bg-stone-200" />
+                                <div className="h-px bg-light" />
                                 <div className="flex justify-between items-center">
-                                    <span className="text-stone-600 font-bold">Total Bill</span>
+                                    <span className="text-secondary font-bold">Total Bill</span>
                                     <span className="text-3xl font-bold text-orange-600">{formatCurrency(totalBill)}</span>
                                 </div>
                             </div>

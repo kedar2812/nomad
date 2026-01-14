@@ -145,12 +145,12 @@ export default function CommandPalette({ onTableAction }) {
             onClick={() => setIsOpen(false)}
         >
             <div
-                className="w-full max-w-lg bg-white/95 backdrop-blur-2xl border border-stone-200 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+                className="w-full max-w-lg bg-secondary/95 backdrop-blur-2xl border border-light rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150"
                 onClick={e => e.stopPropagation()}
             >
                 {/* Search Input */}
-                <div className="flex items-center gap-3 p-4 border-b border-stone-200">
-                    <Search size={20} className="text-stone-400" />
+                <div className="flex items-center gap-3 p-4 border-b border-light">
+                    <Search size={20} className="text-tertiary" />
                     <input
                         ref={inputRef}
                         type="text"
@@ -158,9 +158,9 @@ export default function CommandPalette({ onTableAction }) {
                         onChange={e => { setQuery(e.target.value); setSelectedIndex(0); }}
                         onKeyDown={handleKeyDown}
                         placeholder="Search commands, tables, guests..."
-                        className="flex-1 bg-transparent text-stone-800 placeholder:text-stone-400 focus:outline-none text-lg"
+                        className="flex-1 bg-transparent text-primary placeholder:text-tertiary focus:outline-none text-lg"
                     />
-                    <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs text-stone-500 bg-stone-100 rounded border border-stone-200">
+                    <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs text-tertiary bg-tertiary rounded border border-light">
                         ESC
                     </kbd>
                 </div>
@@ -168,14 +168,14 @@ export default function CommandPalette({ onTableAction }) {
                 {/* Results */}
                 <div className="max-h-[50vh] overflow-y-auto">
                     {filteredCommands.length === 0 ? (
-                        <div className="p-8 text-center text-stone-400">
+                        <div className="p-8 text-center text-tertiary">
                             <Search size={32} className="mx-auto mb-2 opacity-30" />
                             <p className="text-sm">No matching commands</p>
                         </div>
                     ) : (
                         Object.entries(groupedCommands).map(([category, cmds]) => (
                             <div key={category}>
-                                <div className="px-4 py-2 text-xs font-bold text-stone-600 uppercase tracking-wider bg-stone-50">
+                                <div className="px-4 py-2 text-xs font-bold text-secondary uppercase tracking-wider bg-tertiary">
                                     {category}
                                 </div>
                                 {cmds.map((cmd, idx) => {
@@ -188,19 +188,19 @@ export default function CommandPalette({ onTableAction }) {
                                             className={cn(
                                                 "w-full flex items-center gap-3 px-4 py-3 text-left transition-colors",
                                                 globalIdx === selectedIndex
-                                                    ? "bg-orange-100 text-orange-700"
-                                                    : "text-stone-700 hover:bg-stone-50"
+                                                    ? "bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400"
+                                                    : "text-secondary hover:bg-tertiary"
                                             )}
                                         >
                                             <Icon size={18} className="opacity-50" />
                                             <div className="flex-1 min-w-0">
                                                 <div className="font-medium truncate">{cmd.label}</div>
                                                 {cmd.sublabel && (
-                                                    <div className="text-xs text-stone-500 truncate">{cmd.sublabel}</div>
+                                                    <div className="text-xs text-tertiary truncate">{cmd.sublabel}</div>
                                                 )}
                                             </div>
                                             {globalIdx === selectedIndex && (
-                                                <kbd className="text-xs text-stone-500 bg-white px-2 py-0.5 rounded border border-stone-200">↵</kbd>
+                                                <kbd className="text-xs text-tertiary bg-secondary px-2 py-0.5 rounded border border-light">↵</kbd>
                                             )}
                                         </button>
                                     );
@@ -211,10 +211,10 @@ export default function CommandPalette({ onTableAction }) {
                 </div>
 
                 {/* Footer */}
-                <div className="p-3 border-t border-stone-200 flex items-center justify-between text-xs text-stone-500">
+                <div className="p-3 border-t border-light flex items-center justify-between text-xs text-tertiary">
                     <span>
-                        <kbd className="px-1.5 py-0.5 bg-stone-100 rounded mr-1 border border-stone-200">↑↓</kbd> Navigate
-                        <kbd className="px-1.5 py-0.5 bg-stone-100 rounded mx-1 ml-3 border border-stone-200">↵</kbd> Select
+                        <kbd className="px-1.5 py-0.5 bg-tertiary rounded mr-1 border border-light">↑↓</kbd> Navigate
+                        <kbd className="px-1.5 py-0.5 bg-tertiary rounded mx-1 ml-3 border border-light">↵</kbd> Select
                     </span>
                     <span className="text-orange-600/70">⌘K to toggle</span>
                 </div>

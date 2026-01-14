@@ -54,11 +54,11 @@ export default function TableCard({ table, onClick }) {
 
     const isOccupied = table.status === 'occupied';
 
-    // Light theme styles
+    // Semantic theme styles
     const statusStyles = {
-        green: "border-emerald-400 shadow-lg shadow-emerald-100 bg-white",
-        yellow: "border-yellow-400 shadow-lg shadow-yellow-100 bg-white",
-        red: "border-red-400 shadow-lg shadow-red-100 bg-white animate-pulse"
+        green: "border-emerald-400 shadow-lg shadow-emerald-100 dark:shadow-emerald-950 bg-secondary",
+        yellow: "border-yellow-400 shadow-lg shadow-yellow-100 dark:shadow-yellow-950 bg-secondary",
+        red: "border-red-400 shadow-lg shadow-red-100 dark:shadow-red-950 bg-secondary animate-pulse"
     };
 
     // Get type icon
@@ -75,7 +75,7 @@ export default function TableCard({ table, onClick }) {
                 "relative p-6 rounded-3xl border-2 transition-all duration-300 cursor-pointer overflow-hidden group",
                 isOccupied
                     ? statusStyles[statusColor]
-                    : "bg-white/70 border-stone-200 hover:border-stone-300 hover:bg-white hover:shadow-lg"
+                    : "bg-secondary/70 border-light hover:border-medium hover:bg-secondary hover:shadow-lg"
             )}
         >
             {/* Attribute Icons - Top Right */}
@@ -110,7 +110,7 @@ export default function TableCard({ table, onClick }) {
                 <div className="flex items-center gap-2">
                     <h3 className={cn(
                         "text-3xl font-black tracking-tighter",
-                        isOccupied ? "text-stone-800" : "text-stone-400 group-hover:text-stone-600"
+                        isOccupied ? "text-primary" : "text-tertiary group-hover:text-secondary"
                     )}>
                         {table.name}
                     </h3>
@@ -124,9 +124,9 @@ export default function TableCard({ table, onClick }) {
                     <div className={cn(
                         "px-3 py-1 rounded-full text-xs font-mono font-bold border shadow-sm flex items-center gap-2",
                         session?.isPaused && "opacity-50",
-                        statusColor === 'green' && "bg-emerald-50 text-emerald-700 border-emerald-200",
-                        statusColor === 'yellow' && "bg-yellow-50 text-yellow-700 border-yellow-200",
-                        statusColor === 'red' && "bg-red-50 text-red-700 border-red-200"
+                        statusColor === 'green' && "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-700",
+                        statusColor === 'yellow' && "bg-yellow-50 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-700",
+                        statusColor === 'red' && "bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-400 border-red-200 dark:border-red-700"
                     )}>
                         <Clock size={12} strokeWidth={3} />
                         {session?.isPaused ? '⏸️' : formatTime(timeLeft)}
@@ -136,10 +136,10 @@ export default function TableCard({ table, onClick }) {
 
             {isOccupied && session ? (
                 <div className="space-y-4 relative z-10">
-                    <div className="flex items-center gap-3 text-stone-700 p-3 rounded-2xl bg-stone-50 border border-stone-100">
+                    <div className="flex items-center gap-3 text-secondary p-3 rounded-2xl bg-tertiary border border-light">
                         <div className={cn(
                             "p-2 rounded-xl shadow-sm",
-                            statusColor === 'red' ? "bg-red-100 text-red-600" : "bg-emerald-100 text-emerald-600"
+                            statusColor === 'red' ? "bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400" : "bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400"
                         )}>
                             <User size={18} strokeWidth={2.5} />
                         </div>

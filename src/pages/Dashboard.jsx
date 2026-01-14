@@ -56,37 +56,37 @@ export default function Dashboard() {
             {/* Header */}
             <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
-                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-500 tracking-tight">Floor Plan</h2>
+                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-500 dark:from-stone-200 dark:to-stone-400 tracking-tight">Floor Plan</h2>
                     <div className="flex items-center gap-3 mt-1 flex-wrap">
                         <span className={cn(
                             "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] font-bold uppercase",
                             isOnline
-                                ? 'bg-emerald-50 border-emerald-200 text-emerald-600'
-                                : 'bg-red-50 border-red-200 text-red-600'
+                                ? 'bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400'
+                                : 'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400'
                         )}>
                             {isOnline ? <Wifi size={10} /> : <WifiOff size={10} />}
                             {isOnline ? 'Online' : 'Offline'}
                         </span>
-                        <span className="text-stone-500 text-xs">
+                        <span className="text-tertiary text-xs">
                             {activeSessions.length} active
                             {pausedSessions.length > 0 && (
-                                <span className="text-yellow-600 ml-1">({pausedSessions.length} paused)</span>
+                                <span className="text-yellow-600 dark:text-yellow-500 ml-1">({pausedSessions.length} paused)</span>
                             )}
                         </span>
                     </div>
                 </div>
 
                 {/* Legend */}
-                <div className="flex gap-4 text-sm font-medium text-stone-500 bg-white/70 p-2 rounded-xl backdrop-blur-sm border border-stone-200/50 shadow-sm">
+                <div className="flex gap-4 text-sm font-medium text-tertiary bg-secondary/70 p-2 rounded-xl backdrop-blur-sm border border-light/50 shadow-sm">
                     <div className="flex items-center gap-2 px-2">
-                        <div className="w-2 h-2 rounded-full bg-stone-300 shadow-sm"></div>
+                        <div className="w-2 h-2 rounded-full bg-stone-300 dark:bg-stone-600 shadow-sm"></div>
                         <span>Open</span>
                     </div>
-                    <div className="flex items-center gap-2 px-2 border-l border-stone-200">
+                    <div className="flex items-center gap-2 px-2 border-l border-light">
                         <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-sm"></div>
                         <span>Active</span>
                     </div>
-                    <div className="flex items-center gap-2 px-2 border-l border-stone-200">
+                    <div className="flex items-center gap-2 px-2 border-l border-light">
                         <div className="w-2 h-2 rounded-full bg-red-500 shadow-sm"></div>
                         <span>Overtime</span>
                     </div>
@@ -95,7 +95,7 @@ export default function Dashboard() {
 
             {/* Filter Bar */}
             <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-stone-500 text-xs font-medium flex items-center gap-1">
+                <span className="text-tertiary text-xs font-medium flex items-center gap-1">
                     <Filter size={12} /> Quick Filters:
                 </span>
 
@@ -105,8 +105,8 @@ export default function Dashboard() {
                     className={cn(
                         "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5",
                         filters.hasPlug === true
-                            ? "bg-yellow-100 border-yellow-300 text-yellow-700"
-                            : "bg-white/70 border-stone-200 text-stone-500 hover:border-stone-300 hover:bg-white"
+                            ? "bg-yellow-100 dark:bg-yellow-950 border-yellow-300 dark:border-yellow-700 text-yellow-700 dark:text-yellow-400"
+                            : "bg-secondary/70 border-light text-tertiary hover:border-medium hover:bg-secondary"
                     )}
                 >
                     <Zap size={12} /> Power
@@ -118,8 +118,8 @@ export default function Dashboard() {
                     className={cn(
                         "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5",
                         filters.nearWindow === true
-                            ? "bg-orange-100 border-orange-300 text-orange-700"
-                            : "bg-white/70 border-stone-200 text-stone-500 hover:border-stone-300 hover:bg-white"
+                            ? "bg-orange-100 dark:bg-orange-950 border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-400"
+                            : "bg-secondary/70 border-light text-tertiary hover:border-medium hover:bg-secondary"
                     )}
                 >
                     <Sun size={12} /> Window
@@ -131,8 +131,8 @@ export default function Dashboard() {
                     className={cn(
                         "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5",
                         filters.type === 'sofa'
-                            ? "bg-purple-100 border-purple-300 text-purple-700"
-                            : "bg-white/70 border-stone-200 text-stone-500 hover:border-stone-300 hover:bg-white"
+                            ? "bg-purple-100 dark:bg-purple-950 border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-400"
+                            : "bg-secondary/70 border-light text-tertiary hover:border-medium hover:bg-secondary"
                     )}
                 >
                     🛋️ Sofa
@@ -143,8 +143,8 @@ export default function Dashboard() {
                     className={cn(
                         "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5",
                         filters.type === 'beanbag'
-                            ? "bg-pink-100 border-pink-300 text-pink-700"
-                            : "bg-white/70 border-stone-200 text-stone-500 hover:border-stone-300 hover:bg-white"
+                            ? "bg-pink-100 dark:bg-pink-950 border-pink-300 dark:border-pink-700 text-pink-700 dark:text-pink-400"
+                            : "bg-secondary/70 border-light text-tertiary hover:border-medium hover:bg-secondary"
                     )}
                 >
                     🫘 Beanbag
@@ -156,8 +156,8 @@ export default function Dashboard() {
                     className={cn(
                         "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5",
                         filters.status === 'available'
-                            ? "bg-emerald-100 border-emerald-300 text-emerald-700"
-                            : "bg-white/70 border-stone-200 text-stone-500 hover:border-stone-300 hover:bg-white"
+                            ? "bg-emerald-100 dark:bg-emerald-950 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-400"
+                            : "bg-secondary/70 border-light text-tertiary hover:border-medium hover:bg-secondary"
                     )}
                 >
                     ✅ Available
@@ -167,7 +167,7 @@ export default function Dashboard() {
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="px-3 py-1.5 rounded-lg text-xs font-medium border bg-red-50 border-red-200 text-red-600 hover:bg-red-100 transition-all flex items-center gap-1"
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium border bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 transition-all flex items-center gap-1"
                     >
                         <X size={12} /> Clear
                     </button>

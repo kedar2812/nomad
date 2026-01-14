@@ -8,11 +8,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Custom Brand Palette
+        // Semantic Background Colors
+        primary: 'rgb(var(--color-bg-primary) / <alpha-value>)',
+        secondary: 'rgb(var(--color-bg-secondary) / <alpha-value>)',
+        tertiary: 'rgb(var(--color-bg-tertiary) / <alpha-value>)',
+
+        // Custom Brand Palette (keep existing)
         nomad: {
-          black: '#0c0a09', // Warm black
-          dark: '#1C1C1E',  // Apple dark gray
-          light: '#F5F5F7', // Apple light gray
+          black: '#0c0a09',
+          dark: '#1C1C1E',
+          light: '#F5F5F7',
         },
         neon: {
           orange: '#FF6B00',
@@ -20,6 +25,20 @@ export default {
           purple: '#B026FF',
           green: '#00FF94'
         }
+      },
+      backgroundColor: {
+        primary: 'rgb(var(--color-bg-primary) / <alpha-value>)',
+        secondary: 'rgb(var(--color-bg-secondary) / <alpha-value>)',
+        tertiary: 'rgb(var(--color-bg-tertiary) / <alpha-value>)',
+      },
+      textColor: {
+        primary: 'rgb(var(--color-text-primary) / <alpha-value>)',
+        secondary: 'rgb(var(--color-text-secondary) / <alpha-value>)',
+        tertiary: 'rgb(var(--color-text-tertiary) / <alpha-value>)',
+      },
+      borderColor: {
+        light: 'rgb(var(--color-border-light) / <alpha-value>)',
+        medium: 'rgb(var(--color-border-medium) / <alpha-value>)',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',

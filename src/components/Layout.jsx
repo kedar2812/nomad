@@ -4,7 +4,7 @@ import Header from './Header';
 
 export default function Layout({ children }) {
     return (
-        <div className="min-h-screen text-stone-800 font-sans">
+        <div className="min-h-screen text-primary font-sans">
             <Sidebar />
             <Header />
             <main className="pl-24 pt-20 min-h-screen relative transition-all duration-300">

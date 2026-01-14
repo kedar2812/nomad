@@ -88,39 +88,39 @@ export default function Settings() {
     return (
         <div className="max-w-2xl mx-auto space-y-8 animate-fade-in">
             <div>
-                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-500 tracking-tight">
+                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-500 dark:from-stone-200 dark:to-stone-400 tracking-tight">
                     Settings
                 </h2>
-                <p className="text-stone-500 text-sm mt-1">Manage your data and preferences</p>
+                <p className="text-tertiary text-sm mt-1">Manage your data and preferences</p>
             </div>
 
             {/* Data Stats */}
-            <div className="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm">
-                <h3 className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-secondary rounded-2xl p-6 border border-light shadow-sm">
+                <h3 className="text-xs font-bold text-secondary uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Database size={14} /> Database Stats
                 </h3>
                 <div className="grid grid-cols-3 gap-4">
                     <div className="text-center">
-                        <div className="text-3xl font-bold text-stone-800">{activeSessions}</div>
-                        <div className="text-xs text-stone-500 mt-1">Active Sessions</div>
+                        <div className="text-3xl font-bold text-primary">{activeSessions}</div>
+                        <div className="text-xs text-tertiary mt-1">Active Sessions</div>
                     </div>
                     <div className="text-center">
-                        <div className="text-3xl font-bold text-stone-800">{completedSessions}</div>
-                        <div className="text-xs text-stone-500 mt-1">Completed</div>
+                        <div className="text-3xl font-bold text-primary">{completedSessions}</div>
+                        <div className="text-xs text-tertiary mt-1">Completed</div>
                     </div>
                     <div className="text-center">
-                        <div className="text-3xl font-bold text-stone-800">{totalOrders}</div>
-                        <div className="text-xs text-stone-500 mt-1">Total Orders</div>
+                        <div className="text-3xl font-bold text-primary">{totalOrders}</div>
+                        <div className="text-xs text-tertiary mt-1">Total Orders</div>
                     </div>
                 </div>
             </div>
 
             {/* Export Section */}
-            <div className="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm">
-                <h3 className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-secondary rounded-2xl p-6 border border-light shadow-sm">
+                <h3 className="text-xs font-bold text-secondary uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Download size={14} /> Export Data
                 </h3>
-                <p className="text-sm text-stone-500 mb-4">
+                <p className="text-sm text-tertiary mb-4">
                     Download a complete backup of all sessions and logs as a JSON file.
                 </p>
                 <button
@@ -128,10 +128,10 @@ export default function Settings() {
                     className={cn(
                         "w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border",
                         exportStatus === 'success'
-                            ? "bg-emerald-50 border-emerald-200 text-emerald-600"
+                            ? "bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
                             : exportStatus === 'error'
-                                ? "bg-red-50 border-red-200 text-red-600"
-                                : "bg-orange-50 border-orange-200 text-orange-600 hover:bg-orange-100"
+                                ? "bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-700 text-red-600 dark:text-red-400"
+                                : "bg-orange-50 dark:bg-orange-950 border-orange-200 dark:border-orange-700 text-orange-600 dark:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900"
                     )}
                 >
                     {exportStatus === 'success' ? (
