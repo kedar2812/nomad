@@ -86,34 +86,34 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
 
     return createPortal(
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
-            <div className="w-full max-w-3xl bg-[#1C1C1E]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.5)] relative flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+            <div className="w-full max-w-3xl bg-white/95 backdrop-blur-2xl border border-stone-200 rounded-2xl shadow-2xl relative flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
                 {/* Header */}
-                <div className="flex justify-between items-center p-6 border-b border-white/10">
+                <div className="flex justify-between items-center p-6 border-b border-stone-200">
                     <div>
-                        <h2 className="text-2xl font-bold text-white tracking-tight">{session.customerName}</h2>
+                        <h2 className="text-2xl font-bold text-stone-800 tracking-tight">{session.customerName}</h2>
                         <div className="flex items-center gap-2 mt-1">
-                            <span className="text-orange-500 font-mono font-bold bg-orange-500/10 px-2 py-0.5 rounded text-sm">Table {table.name}</span>
+                            <span className="text-orange-600 font-mono font-bold bg-orange-100 px-2 py-0.5 rounded text-sm">Table {table.name}</span>
                             {session.isPaused && (
-                                <span className="text-yellow-500 font-mono font-bold bg-yellow-500/10 px-2 py-0.5 rounded text-sm animate-pulse">
+                                <span className="text-yellow-600 font-mono font-bold bg-yellow-100 px-2 py-0.5 rounded text-sm animate-pulse">
                                     ⏸️ PAUSED
                                 </span>
                             )}
                         </div>
                     </div>
-                    <button onClick={onClose} className="text-stone-500 hover:text-white transition-colors">
+                    <button onClick={onClose} className="text-stone-400 hover:text-stone-600 transition-colors">
                         <X size={24} />
                     </button>
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="flex border-b border-white/10">
+                <div className="flex border-b border-stone-200">
                     <button
                         onClick={() => setActiveTab('details')}
                         className={cn(
                             "flex-1 py-3 text-sm font-medium transition-all",
                             activeTab === 'details'
-                                ? "text-orange-400 border-b-2 border-orange-400"
-                                : "text-stone-500 hover:text-white"
+                                ? "text-orange-600 border-b-2 border-orange-500"
+                                : "text-stone-500 hover:text-stone-700"
                         )}
                     >
                         <Clock size={16} className="inline mr-2" />
@@ -124,8 +124,8 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                         className={cn(
                             "flex-1 py-3 text-sm font-medium transition-all relative",
                             activeTab === 'orders'
-                                ? "text-orange-400 border-b-2 border-orange-400"
-                                : "text-stone-500 hover:text-white"
+                                ? "text-orange-600 border-b-2 border-orange-500"
+                                : "text-stone-500 hover:text-stone-700"
                         )}
                     >
                         <ShoppingBag size={16} className="inline mr-2" />
@@ -143,25 +143,25 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                     {activeTab === 'details' ? (
                         <div className="space-y-6">
                             {/* Session Info */}
-                            <div className="bg-black/20 rounded-xl p-5 space-y-4 border border-white/5">
+                            <div className="bg-stone-50 rounded-xl p-5 space-y-4 border border-stone-200">
                                 <div className="flex justify-between items-center text-sm">
-                                    <div className="flex items-center gap-2 text-stone-400">
+                                    <div className="flex items-center gap-2 text-stone-500">
                                         <Clock size={16} /> Booked Duration
                                     </div>
-                                    <span className="text-white font-bold">{session.duration} Hours</span>
+                                    <span className="text-stone-800 font-bold">{session.duration} Hours</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
-                                    <div className="flex items-center gap-2 text-stone-400">
+                                    <div className="flex items-center gap-2 text-stone-500">
                                         <Clock size={16} /> Start Time
                                     </div>
-                                    <span className="text-white font-mono">{new Date(session.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                    <span className="text-stone-800 font-mono">{new Date(session.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                 </div>
                                 {session.totalPausedMs > 0 && (
                                     <div className="flex justify-between items-center text-sm">
-                                        <div className="flex items-center gap-2 text-yellow-500">
+                                        <div className="flex items-center gap-2 text-yellow-600">
                                             <Pause size={16} /> Total Paused
                                         </div>
-                                        <span className="text-yellow-400 font-mono">
+                                        <span className="text-yellow-700 font-mono">
                                             {Math.round(session.totalPausedMs / 60000)} mins
                                         </span>
                                     </div>
@@ -169,35 +169,35 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                             </div>
 
                             {/* Bill Summary */}
-                            <div className="bg-black/20 rounded-xl p-5 space-y-3 border border-white/5">
+                            <div className="bg-stone-50 rounded-xl p-5 space-y-3 border border-stone-200">
                                 <div className="flex justify-between items-center text-sm">
-                                    <span className="text-stone-400">Time Charges</span>
-                                    <span className="text-white">{formatCurrency(timePrice)}</span>
+                                    <span className="text-stone-500">Time Charges</span>
+                                    <span className="text-stone-800">{formatCurrency(timePrice)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
-                                    <span className="text-stone-400">Food & Beverages ({session.orders?.length || 0} items)</span>
-                                    <span className="text-white">{formatCurrency(ordersTotal)}</span>
+                                    <span className="text-stone-500">Food & Beverages ({session.orders?.length || 0} items)</span>
+                                    <span className="text-stone-800">{formatCurrency(ordersTotal)}</span>
                                 </div>
-                                <div className="h-px bg-white/10" />
+                                <div className="h-px bg-stone-200" />
                                 <div className="flex justify-between items-center">
-                                    <span className="text-stone-400 font-bold">Total Bill</span>
-                                    <span className="text-3xl font-bold text-orange-400">{formatCurrency(totalBill)}</span>
+                                    <span className="text-stone-600 font-bold">Total Bill</span>
+                                    <span className="text-3xl font-bold text-orange-600">{formatCurrency(totalBill)}</span>
                                 </div>
                             </div>
 
                             {/* Current Orders List */}
                             {(session.orders?.length || 0) > 0 && (
-                                <div className="bg-black/20 rounded-xl p-4 border border-white/5">
-                                    <h4 className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">Current Orders</h4>
+                                <div className="bg-stone-50 rounded-xl p-4 border border-stone-200">
+                                    <h4 className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-3">Current Orders</h4>
                                     <div className="space-y-2 max-h-32 overflow-y-auto">
                                         {session.orders.map((order) => (
                                             <div key={order.orderId} className="flex justify-between items-center text-sm">
-                                                <span className="text-white">{order.emoji} {order.name}</span>
+                                                <span className="text-stone-800">{order.emoji} {order.name}</span>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-stone-400">{formatCurrency(order.price)}</span>
+                                                    <span className="text-stone-500">{formatCurrency(order.price)}</span>
                                                     <button
                                                         onClick={() => handleRemoveItem(order.orderId)}
-                                                        className="text-red-400 hover:text-red-300 p-1"
+                                                        className="text-red-500 hover:text-red-600 p-1"
                                                     >
                                                         <Minus size={14} />
                                                     </button>
@@ -213,7 +213,7 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                         <div className="space-y-6">
                             {Object.entries(menuByCategory).map(([category, items]) => (
                                 <div key={category}>
-                                    <h4 className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">{category}</h4>
+                                    <h4 className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-3">{category}</h4>
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                                         {items.map((item) => {
                                             const count = getItemCount(item.id);
@@ -224,13 +224,13 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                                                     className={cn(
                                                         "flex flex-col items-center p-3 rounded-xl border transition-all",
                                                         count > 0
-                                                            ? "bg-orange-500/10 border-orange-500/30 text-orange-400"
-                                                            : "bg-black/20 border-white/5 text-white hover:border-orange-500/30"
+                                                            ? "bg-orange-100 border-orange-300 text-orange-700"
+                                                            : "bg-white border-stone-200 text-stone-700 hover:border-orange-300"
                                                     )}
                                                 >
                                                     <span className="text-2xl mb-1">{item.emoji}</span>
                                                     <span className="text-sm font-medium">{item.name}</span>
-                                                    <span className="text-xs text-stone-400">{formatCurrency(item.price)}</span>
+                                                    <span className="text-xs text-stone-500">{formatCurrency(item.price)}</span>
                                                     {count > 0 && (
                                                         <span className="mt-1 bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                                                             {count}
@@ -247,15 +247,15 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                 </div>
 
                 {/* Footer Actions */}
-                <div className="p-6 border-t border-white/10 space-y-3">
+                <div className="p-6 border-t border-stone-200 space-y-3">
                     <div className="grid grid-cols-3 gap-3">
                         <button
                             onClick={handlePauseToggle}
                             className={cn(
                                 "flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all border",
                                 session.isPaused
-                                    ? "bg-green-500/10 hover:bg-green-500/20 text-green-500 border-green-500/20"
-                                    : "bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500 border-yellow-500/20"
+                                    ? "bg-green-50 hover:bg-green-100 text-green-600 border-green-200"
+                                    : "bg-yellow-50 hover:bg-yellow-100 text-yellow-600 border-yellow-200"
                             )}
                         >
                             {session.isPaused ? <Play size={18} /> : <Pause size={18} />}
@@ -263,13 +263,13 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                         </button>
                         <button
                             onClick={handleWhatsApp}
-                            className="flex items-center justify-center gap-2 py-3 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] rounded-xl font-bold transition-all border border-[#25D366]/20"
+                            className="flex items-center justify-center gap-2 py-3 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] rounded-xl font-bold transition-all border border-[#25D366]/30"
                         >
                             <MessageCircle size={18} /> Notify
                         </button>
                         <button
                             onClick={handleCheckout}
-                            className="flex items-center justify-center gap-2 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-xl font-bold transition-all border border-red-500/20"
+                            className="flex items-center justify-center gap-2 py-3 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl font-bold transition-all border border-red-200"
                         >
                             <LogOut size={18} /> Checkout
                         </button>

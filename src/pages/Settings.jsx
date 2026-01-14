@@ -88,39 +88,39 @@ export default function Settings() {
     return (
         <div className="max-w-2xl mx-auto space-y-8 animate-fade-in">
             <div>
-                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-stone-100 to-stone-400 tracking-tight">
+                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-500 tracking-tight">
                     Settings
                 </h2>
                 <p className="text-stone-500 text-sm mt-1">Manage your data and preferences</p>
             </div>
 
             {/* Data Stats */}
-            <div className="bg-black/20 rounded-2xl p-6 border border-white/5">
-                <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm">
+                <h3 className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Database size={14} /> Database Stats
                 </h3>
                 <div className="grid grid-cols-3 gap-4">
                     <div className="text-center">
-                        <div className="text-3xl font-bold text-white">{activeSessions}</div>
+                        <div className="text-3xl font-bold text-stone-800">{activeSessions}</div>
                         <div className="text-xs text-stone-500 mt-1">Active Sessions</div>
                     </div>
                     <div className="text-center">
-                        <div className="text-3xl font-bold text-white">{completedSessions}</div>
+                        <div className="text-3xl font-bold text-stone-800">{completedSessions}</div>
                         <div className="text-xs text-stone-500 mt-1">Completed</div>
                     </div>
                     <div className="text-center">
-                        <div className="text-3xl font-bold text-white">{totalOrders}</div>
+                        <div className="text-3xl font-bold text-stone-800">{totalOrders}</div>
                         <div className="text-xs text-stone-500 mt-1">Total Orders</div>
                     </div>
                 </div>
             </div>
 
             {/* Export Section */}
-            <div className="bg-black/20 rounded-2xl p-6 border border-white/5">
-                <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm">
+                <h3 className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Download size={14} /> Export Data
                 </h3>
-                <p className="text-sm text-stone-400 mb-4">
+                <p className="text-sm text-stone-500 mb-4">
                     Download a complete backup of all sessions and logs as a JSON file.
                 </p>
                 <button
@@ -128,10 +128,10 @@ export default function Settings() {
                     className={cn(
                         "w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border",
                         exportStatus === 'success'
-                            ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                            ? "bg-emerald-50 border-emerald-200 text-emerald-600"
                             : exportStatus === 'error'
-                                ? "bg-red-500/20 border-red-500/30 text-red-400"
-                                : "bg-orange-500/10 border-orange-500/20 text-orange-400 hover:bg-orange-500/20"
+                                ? "bg-red-50 border-red-200 text-red-600"
+                                : "bg-orange-50 border-orange-200 text-orange-600 hover:bg-orange-100"
                     )}
                 >
                     {exportStatus === 'success' ? (
@@ -145,11 +145,11 @@ export default function Settings() {
             </div>
 
             {/* Import Section */}
-            <div className="bg-black/20 rounded-2xl p-6 border border-white/5">
-                <h3 className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm">
+                <h3 className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Upload size={14} /> Import Data
                 </h3>
-                <p className="text-sm text-stone-400 mb-4">
+                <p className="text-sm text-stone-500 mb-4">
                     Restore from a previously exported JSON backup file.
                 </p>
 
@@ -162,12 +162,12 @@ export default function Settings() {
                     className={cn(
                         "border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all",
                         isDragging
-                            ? "border-orange-500 bg-orange-500/10"
+                            ? "border-orange-500 bg-orange-50"
                             : importStatus === 'success'
-                                ? "border-emerald-500/50 bg-emerald-500/10"
+                                ? "border-emerald-400 bg-emerald-50"
                                 : importStatus === 'error'
-                                    ? "border-red-500/50 bg-red-500/10"
-                                    : "border-white/10 hover:border-white/30 hover:bg-white/5"
+                                    ? "border-red-400 bg-red-50"
+                                    : "border-stone-200 hover:border-stone-300 hover:bg-stone-50"
                     )}
                 >
                     <input
@@ -178,37 +178,37 @@ export default function Settings() {
                         className="hidden"
                     />
                     {importStatus === 'success' ? (
-                        <div className="text-emerald-400">
+                        <div className="text-emerald-600">
                             <CheckCircle size={32} className="mx-auto mb-2" />
                             <p className="font-bold">Data Restored Successfully!</p>
                         </div>
                     ) : importStatus === 'error' ? (
-                        <div className="text-red-400">
+                        <div className="text-red-600">
                             <AlertTriangle size={32} className="mx-auto mb-2" />
                             <p className="font-bold">Import Failed</p>
                             <p className="text-xs mt-1">Invalid file format</p>
                         </div>
                     ) : (
-                        <div className="text-stone-400">
+                        <div className="text-stone-500">
                             <Upload size={32} className="mx-auto mb-2 opacity-50" />
                             <p className="font-medium">Drop JSON file here</p>
-                            <p className="text-xs text-stone-500 mt-1">or click to browse</p>
+                            <p className="text-xs text-stone-400 mt-1">or click to browse</p>
                         </div>
                     )}
                 </div>
             </div>
 
             {/* Danger Zone */}
-            <div className="bg-red-500/5 rounded-2xl p-6 border border-red-500/10">
-                <h3 className="text-xs font-bold text-red-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-red-50 rounded-2xl p-6 border border-red-200">
+                <h3 className="text-xs font-bold text-red-600 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Trash2 size={14} /> Danger Zone
                 </h3>
-                <p className="text-sm text-stone-400 mb-4">
+                <p className="text-sm text-stone-600 mb-4">
                     Permanently delete all data. This action cannot be undone.
                 </p>
                 <button
                     onClick={handleClearData}
-                    className="w-full py-3 rounded-xl font-bold bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-xl font-bold bg-red-100 border border-red-300 text-red-700 hover:bg-red-200 transition-all flex items-center justify-center gap-2"
                 >
                     <Trash2 size={18} /> Clear All Data
                 </button>

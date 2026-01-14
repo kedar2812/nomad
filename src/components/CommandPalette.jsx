@@ -145,12 +145,12 @@ export default function CommandPalette({ onTableAction }) {
             onClick={() => setIsOpen(false)}
         >
             <div
-                className="w-full max-w-lg bg-[#1C1C1E]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.5)] overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+                className="w-full max-w-lg bg-white/95 backdrop-blur-2xl border border-stone-200 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150"
                 onClick={e => e.stopPropagation()}
             >
                 {/* Search Input */}
-                <div className="flex items-center gap-3 p-4 border-b border-white/10">
-                    <Search size={20} className="text-stone-500" />
+                <div className="flex items-center gap-3 p-4 border-b border-stone-200">
+                    <Search size={20} className="text-stone-400" />
                     <input
                         ref={inputRef}
                         type="text"
@@ -158,9 +158,9 @@ export default function CommandPalette({ onTableAction }) {
                         onChange={e => { setQuery(e.target.value); setSelectedIndex(0); }}
                         onKeyDown={handleKeyDown}
                         placeholder="Search commands, tables, guests..."
-                        className="flex-1 bg-transparent text-white placeholder:text-stone-500 focus:outline-none text-lg"
+                        className="flex-1 bg-transparent text-stone-800 placeholder:text-stone-400 focus:outline-none text-lg"
                     />
-                    <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs text-stone-500 bg-white/5 rounded border border-white/10">
+                    <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs text-stone-500 bg-stone-100 rounded border border-stone-200">
                         ESC
                     </kbd>
                 </div>
@@ -168,14 +168,14 @@ export default function CommandPalette({ onTableAction }) {
                 {/* Results */}
                 <div className="max-h-[50vh] overflow-y-auto">
                     {filteredCommands.length === 0 ? (
-                        <div className="p-8 text-center text-stone-500">
+                        <div className="p-8 text-center text-stone-400">
                             <Search size={32} className="mx-auto mb-2 opacity-30" />
                             <p className="text-sm">No matching commands</p>
                         </div>
                     ) : (
                         Object.entries(groupedCommands).map(([category, cmds]) => (
                             <div key={category}>
-                                <div className="px-4 py-2 text-xs font-bold text-stone-500 uppercase tracking-wider bg-black/20">
+                                <div className="px-4 py-2 text-xs font-bold text-stone-600 uppercase tracking-wider bg-stone-50">
                                     {category}
                                 </div>
                                 {cmds.map((cmd, idx) => {
@@ -188,8 +188,8 @@ export default function CommandPalette({ onTableAction }) {
                                             className={cn(
                                                 "w-full flex items-center gap-3 px-4 py-3 text-left transition-colors",
                                                 globalIdx === selectedIndex
-                                                    ? "bg-orange-500/10 text-orange-400"
-                                                    : "text-white hover:bg-white/5"
+                                                    ? "bg-orange-100 text-orange-700"
+                                                    : "text-stone-700 hover:bg-stone-50"
                                             )}
                                         >
                                             <Icon size={18} className="opacity-50" />
@@ -200,7 +200,7 @@ export default function CommandPalette({ onTableAction }) {
                                                 )}
                                             </div>
                                             {globalIdx === selectedIndex && (
-                                                <kbd className="text-xs text-stone-500 bg-white/5 px-2 py-0.5 rounded">↵</kbd>
+                                                <kbd className="text-xs text-stone-500 bg-white px-2 py-0.5 rounded border border-stone-200">↵</kbd>
                                             )}
                                         </button>
                                     );
@@ -211,12 +211,12 @@ export default function CommandPalette({ onTableAction }) {
                 </div>
 
                 {/* Footer */}
-                <div className="p-3 border-t border-white/10 flex items-center justify-between text-xs text-stone-500">
+                <div className="p-3 border-t border-stone-200 flex items-center justify-between text-xs text-stone-500">
                     <span>
-                        <kbd className="px-1.5 py-0.5 bg-white/5 rounded mr-1">↑↓</kbd> Navigate
-                        <kbd className="px-1.5 py-0.5 bg-white/5 rounded mx-1 ml-3">↵</kbd> Select
+                        <kbd className="px-1.5 py-0.5 bg-stone-100 rounded mr-1 border border-stone-200">↑↓</kbd> Navigate
+                        <kbd className="px-1.5 py-0.5 bg-stone-100 rounded mx-1 ml-3 border border-stone-200">↵</kbd> Select
                     </span>
-                    <span className="text-orange-400/60">⌘K to toggle</span>
+                    <span className="text-orange-600/70">⌘K to toggle</span>
                 </div>
             </div>
         </div>,
