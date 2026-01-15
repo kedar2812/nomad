@@ -211,12 +211,11 @@ export default function CommandPalette({ onTableAction }) {
                 </div>
 
                 {/* Footer */}
-                <div className="p-3 border-t border-light flex items-center justify-between text-xs text-tertiary">
+                <div className="p-3 border-t border-light flex items-center justify-center text-xs text-tertiary">
                     <span>
                         <kbd className="px-1.5 py-0.5 bg-tertiary rounded mr-1 border border-light">↑↓</kbd> Navigate
                         <kbd className="px-1.5 py-0.5 bg-tertiary rounded mx-1 ml-3 border border-light">↵</kbd> Select
                     </span>
-                    <span className="text-blue-600/70">⌘K to toggle</span>
                 </div>
             </div>
         </div>,

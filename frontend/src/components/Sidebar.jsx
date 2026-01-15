@@ -21,16 +21,6 @@ export default function Sidebar() {
 
             {/* Spacer */}
             <div className="flex-1" />
-
-            {/* Command Palette Hint */}
-            <div className="px-2 w-full">
-                <div className="flex flex-col items-center gap-1 p-2 text-tertiary hover:text-secondary transition-colors cursor-pointer group"
-                    title="Press ⌘K to open command palette"
-                >
-                    <Command size={16} />
-                    <span className="text-[8px] font-mono">⌘K</span>
-                </div>
-            </div>
         </aside>
     );
 }
