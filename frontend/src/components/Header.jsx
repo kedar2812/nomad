@@ -18,7 +18,7 @@ export default function Header({ onSearchClick }) {
     return (
         <header className="fixed top-4 left-24 right-8 h-16 rounded-2xl bg-secondary/70 backdrop-blur-xl border border-light/50 flex items-center justify-between px-8 z-40 shadow-lg shadow-stone-200/40 dark:shadow-black/40 transition-all duration-300">
             <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 bg-clip-text text-transparent">nomad</h1>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">nomad</h1>
                 <p className="text-[10px] text-tertiary font-medium tracking-[0.2em] uppercase">Space Management</p>
             </div>
 

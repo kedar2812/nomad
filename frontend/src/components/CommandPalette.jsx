@@ -188,7 +188,7 @@ export default function CommandPalette({ onTableAction }) {
                                             className={cn(
                                                 "w-full flex items-center gap-3 px-4 py-3 text-left transition-colors",
                                                 globalIdx === selectedIndex
-                                                    ? "bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400"
+                                                    ? "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400"
                                                     : "text-secondary hover:bg-tertiary"
                                             )}
                                         >
@@ -216,7 +216,7 @@ export default function CommandPalette({ onTableAction }) {
                         <kbd className="px-1.5 py-0.5 bg-tertiary rounded mr-1 border border-light">↑↓</kbd> Navigate
                         <kbd className="px-1.5 py-0.5 bg-tertiary rounded mx-1 ml-3 border border-light">↵</kbd> Select
                     </span>
-                    <span className="text-orange-600/70">⌘K to toggle</span>
+                    <span className="text-blue-600/70">⌘K to toggle</span>
                 </div>
             </div>
         </div>,

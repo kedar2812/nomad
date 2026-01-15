@@ -60,7 +60,7 @@ export default function CheckInModal({ isOpen, onClose, table }) {
                 particleCount: 100,
                 spread: 70,
                 origin: { y: 0.6 },
-                colors: ['#FF6B00', '#00F0FF', '#ffffff'] // Brand colors
+                colors: ['#007FFF', '#2A52BE', '#ffffff'] // Brand colors
             });
 
             // Reset & Close
@@ -123,7 +123,7 @@ export default function CheckInModal({ isOpen, onClose, table }) {
                                         type="text"
                                         required
                                         className={cn(
-                                            "w-full bg-secondary border border-light rounded-xl py-3 pl-10 pr-4 text-primary placeholder:text-tertiary focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all",
+                                            "w-full bg-secondary border border-light rounded-xl py-3 pl-10 pr-4 text-primary placeholder:text-tertiary focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all",
                                             activeUserAlert && "border-yellow-400 focus:ring-yellow-400/30"
                                         )}
                                         placeholder="Enter name (min 3 chars to search)"
@@ -140,7 +140,7 @@ export default function CheckInModal({ isOpen, onClose, table }) {
                                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-tertiary" size={18} />
                                     <input
                                         type="tel"
-                                        className="w-full bg-secondary border border-light rounded-xl py-3 pl-10 pr-4 text-primary placeholder:text-tertiary focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                                        className="w-full bg-secondary border border-light rounded-xl py-3 pl-10 pr-4 text-primary placeholder:text-tertiary focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                                         placeholder="Phone Number"
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
@@ -156,7 +156,7 @@ export default function CheckInModal({ isOpen, onClose, table }) {
                                         <select
                                             value={pax}
                                             onChange={(e) => setPax(e.target.value)}
-                                            className="w-full bg-secondary border border-light rounded-xl py-3 pl-10 pr-4 text-primary appearance-none focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                                            className="w-full bg-secondary border border-light rounded-xl py-3 pl-10 pr-4 text-primary appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                                         >
                                             {[1, 2, 3, 4, 5, 6].map(n => (
                                                 <option key={n} value={n} className="bg-secondary">{n} Person{n > 1 ? 's' : ''}</option>
@@ -171,7 +171,7 @@ export default function CheckInModal({ isOpen, onClose, table }) {
                                         <select
                                             value={hours}
                                             onChange={(e) => setHours(e.target.value)}
-                                            className="w-full bg-secondary border border-light rounded-xl py-3 pl-10 pr-4 text-primary appearance-none focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                                            className="w-full bg-secondary border border-light rounded-xl py-3 pl-10 pr-4 text-primary appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                                         >
                                             {[1, 2, 3, 4, 5].map(h => (
                                                 <option key={h} value={h} className="bg-secondary">{h} Hour{h > 1 ? 's' : ''}</option>
@@ -189,7 +189,7 @@ export default function CheckInModal({ isOpen, onClose, table }) {
                                 "w-full py-4 rounded-xl font-bold text-white transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed",
                                 activeUserAlert
                                     ? "bg-stone-300 dark:bg-stone-800 text-stone-500 dark:text-stone-400"
-                                    : "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 shadow-lg"
+                                    : "bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 shadow-lg"
                             )}
                         >
                             Start Session

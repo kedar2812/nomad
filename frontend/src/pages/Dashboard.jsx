@@ -118,7 +118,7 @@ export default function Dashboard() {
                     className={cn(
                         "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5",
                         filters.nearWindow === true
-                            ? "bg-orange-100 dark:bg-orange-950 border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-400"
+                            ? "bg-blue-100 dark:bg-blue-950 border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-400"
                             : "bg-secondary/70 border-light text-tertiary hover:border-medium hover:bg-secondary"
                     )}
                 >

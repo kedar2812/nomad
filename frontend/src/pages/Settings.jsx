@@ -131,7 +131,7 @@ export default function Settings() {
                             ? "bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
                             : exportStatus === 'error'
                                 ? "bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-700 text-red-600 dark:text-red-400"
-                                : "bg-orange-50 dark:bg-orange-950 border-orange-200 dark:border-orange-700 text-orange-600 dark:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900"
+                                : "bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-700 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900"
                     )}
                 >
                     {exportStatus === 'success' ? (
@@ -162,7 +162,7 @@ export default function Settings() {
                     className={cn(
                         "border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all",
                         isDragging
-                            ? "border-orange-500 bg-orange-50"
+                            ? "border-blue-500 bg-blue-50"
                             : importStatus === 'success'
                                 ? "border-emerald-400 bg-emerald-50"
                                 : importStatus === 'error'

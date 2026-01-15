@@ -92,7 +92,7 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                     <div>
                         <h2 className="text-2xl font-bold text-primary tracking-tight">{session.customerName}</h2>
                         <div className="flex items-center gap-2 mt-1">
-                            <span className="text-orange-600 font-mono font-bold bg-orange-100 dark:bg-orange-950 px-2 py-0.5 rounded text-sm">Table {table.name}</span>
+                            <span className="text-blue-600 font-mono font-bold bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded text-sm">Table {table.name}</span>
                             {session.isPaused && (
                                 <span className="text-yellow-600 dark:text-yellow-500 font-mono font-bold bg-yellow-100 dark:bg-yellow-950 px-2 py-0.5 rounded text-sm animate-pulse">
                                     ⏸️ PAUSED
@@ -112,7 +112,7 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                         className={cn(
                             "flex-1 py-3 text-sm font-medium transition-all",
                             activeTab === 'details'
-                                ? "text-orange-600 border-b-2 border-orange-500"
+                                ? "text-blue-600 border-b-2 border-blue-500"
                                 : "text-tertiary hover:text-secondary"
                         )}
                     >
@@ -124,14 +124,14 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                         className={cn(
                             "flex-1 py-3 text-sm font-medium transition-all relative",
                             activeTab === 'orders'
-                                ? "text-orange-600 border-b-2 border-orange-500"
+                                ? "text-blue-600 border-b-2 border-blue-500"
                                 : "text-tertiary hover:text-secondary"
                         )}
                     >
                         <ShoppingBag size={16} className="inline mr-2" />
                         Add Items
                         {(session.orders?.length || 0) > 0 && (
-                            <span className="absolute -top-1 right-1/4 bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                            <span className="absolute -top-1 right-1/4 bg-blue-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                                 {session.orders.length}
                             </span>
                         )}
@@ -181,7 +181,7 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                                 <div className="h-px bg-light" />
                                 <div className="flex justify-between items-center">
                                     <span className="text-secondary font-bold">Total Bill</span>
-                                    <span className="text-3xl font-bold text-orange-600">{formatCurrency(totalBill)}</span>
+                                    <span className="text-3xl font-bold text-blue-600">{formatCurrency(totalBill)}</span>
                                 </div>
                             </div>
 
@@ -224,15 +224,15 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                                                     className={cn(
                                                         "flex flex-col items-center p-3 rounded-xl border transition-all",
                                                         count > 0
-                                                            ? "bg-orange-100 border-orange-300 text-orange-700"
-                                                            : "bg-secondary border-light text-secondary hover:border-orange-300 shadow-sm"
+                                                            ? "bg-blue-100 border-blue-300 text-blue-700"
+                                                            : "bg-secondary border-light text-secondary hover:border-blue-300 shadow-sm"
                                                     )}
                                                 >
                                                     <span className="text-2xl mb-1">{item.emoji}</span>
                                                     <span className="text-sm font-medium">{item.name}</span>
                                                     <span className="text-xs text-stone-500">{formatCurrency(item.price)}</span>
                                                     {count > 0 && (
-                                                        <span className="mt-1 bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                                                        <span className="mt-1 bg-blue-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                                                             {count}
                                                         </span>
                                                     )}

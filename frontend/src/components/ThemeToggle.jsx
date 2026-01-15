@@ -21,7 +21,7 @@ export default function ThemeToggle() {
                     className={cn(
                         "p-2 rounded-md transition-all duration-200",
                         theme === value
-                            ? "bg-orange-500 text-white shadow-sm"
+                            ? "bg-blue-500 text-white shadow-sm"
                             : "text-tertiary hover:text-secondary hover:bg-tertiary/50"
                     )}
                     title={label}

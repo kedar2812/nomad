@@ -24,10 +24,10 @@
     --color-border-medium: 214 211 209;
     /* stone-300 */
 
-    --color-accent-primary: 249 115 22;
-    /* orange-500 - brand */
-    --color-accent-secondary: 251 146 60;
-    /* orange-400 */
+    --color-accent-primary: 0 127 255;
+    /* azure blue - brand */
+    --color-accent-secondary: 42 82 190;
+    /* royal blue */
 
     /* Light Theme Scrollbar */
     --scrollbar-thumb: 214 211 209;
@@ -57,10 +57,10 @@
     --color-border-medium: 68 64 60;
     /* stone-700 - slightly stronger */
 
-    --color-accent-primary: 251 146 60;
-    /* orange-400 */
-    --color-accent-secondary: 253 186 116;
-    /* orange-300 */
+    --color-accent-primary: 59 130 246;
+    /* blue-500 for dark mode */
+    --color-accent-secondary: 96 165 250;
+    /* blue-400 for dark mode */
 
     /* Dark Theme Scrollbar */
     --scrollbar-thumb: 68 64 60;
@@ -79,7 +79,7 @@
   }
 
   body::selection {
-    background-color: rgba(249, 115, 22, 0.2);
+    background-color: rgba(0, 127, 255, 0.2);
   }
 
   /* Custom Scrollbar for Webkit */

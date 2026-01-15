@@ -68,7 +68,7 @@ export default function CustomerCheckIn() {
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full bg-stone-900 border border-stone-800 rounded-xl p-4 pl-10 text-white focus:ring-2 focus:ring-orange-500/50 outline-none transition-all placeholder:text-stone-600"
+                            className="w-full bg-stone-900 border border-stone-800 rounded-xl p-4 pl-10 text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all placeholder:text-stone-600"
                             placeholder="Min 3 characters"
                         />
                     </div>
@@ -81,7 +81,7 @@ export default function CustomerCheckIn() {
                             type="tel"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
-                            className="w-full bg-stone-900 border border-stone-800 rounded-xl p-4 pl-10 text-white focus:ring-2 focus:ring-orange-500/50 outline-none transition-all placeholder:text-stone-600"
+                            className="w-full bg-stone-900 border border-stone-800 rounded-xl p-4 pl-10 text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all placeholder:text-stone-600"
                             placeholder="10 digit number"
                         />
                     </div>
@@ -94,7 +94,7 @@ export default function CustomerCheckIn() {
                             <select
                                 value={pax}
                                 onChange={(e) => setPax(Number(e.target.value))}
-                                className="w-full bg-stone-900 border border-stone-800 rounded-xl p-4 pl-10 text-white focus:ring-2 focus:ring-orange-500/50 outline-none appearance-none"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-xl p-4 pl-10 text-white focus:ring-2 focus:ring-blue-500/50 outline-none appearance-none"
                             >
                                 {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
                             </select>
@@ -107,7 +107,7 @@ export default function CustomerCheckIn() {
                             <select
                                 value={hours}
                                 onChange={(e) => setHours(Number(e.target.value))}
-                                className="w-full bg-stone-900 border border-stone-800 rounded-xl p-4 pl-10 text-white focus:ring-2 focus:ring-orange-500/50 outline-none appearance-none"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-xl p-4 pl-10 text-white focus:ring-2 focus:ring-blue-500/50 outline-none appearance-none"
                             >
                                 {[1, 2, 3, 4, 5, 6, 7, 8].map(n => <option key={n} value={n}>{n} h</option>)}
                             </select>
@@ -119,7 +119,7 @@ export default function CustomerCheckIn() {
             <button
                 onClick={() => setStep(2)}
                 disabled={!name || !phone || name.length < 3 || phone.length < 10}
-                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-900/20 disabled:opacity-50 disabled:grayscale transition-all active:scale-95 flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-secondary/20 disabled:opacity-50 disabled:grayscale transition-all active:scale-95 flex items-center justify-center gap-2"
             >
                 Select Table <ChevronRight size={20} />
             </button>
@@ -135,7 +135,7 @@ export default function CustomerCheckIn() {
                 </div>
                 <div className="text-right">
                     <p className="text-xs text-stone-500 uppercase font-semibold">Estimate</p>
-                    <p className="text-xl font-bold text-orange-400">{formatCurrency(priceEstimate)}</p>
+                    <p className="text-xl font-bold text-blue-400">{formatCurrency(priceEstimate)}</p>
                 </div>
             </div>
 
@@ -148,7 +148,7 @@ export default function CustomerCheckIn() {
                         className={cn(
                             "p-4 rounded-xl border text-left transition-all relative overflow-hidden",
                             selectedTableId === t.id
-                                ? "bg-orange-500/20 border-orange-500 ring-1 ring-orange-500"
+                                ? "bg-blue-500/20 border-blue-500 ring-1 ring-blue-500"
                                 : t.isAvailable
                                     ? "bg-white/5 border-white/10 hover:bg-white/10"
                                     : "bg-black/40 border-white/5 opacity-60 cursor-not-allowed"
@@ -163,8 +163,8 @@ export default function CustomerCheckIn() {
                         </span>
 
                         {selectedTableId === t.id && (
-                            <div className="absolute top-2 right-2 text-orange-500">
-                                <CheckCircle size={18} fill="currentColor" className="text-orange-500" />
+                            <div className="absolute top-2 right-2 text-blue-500">
+                                <CheckCircle size={18} fill="currentColor" className="text-blue-500" />
                             </div>
                         )}
                     </button>
@@ -206,7 +206,7 @@ export default function CustomerCheckIn() {
                 </div>
                 <div className="flex justify-between text-sm pt-4 border-t border-white/10">
                     <span className="text-stone-500">Est. Total</span>
-                    <span className="text-orange-400 font-bold">{formatCurrency(priceEstimate)}</span>
+                    <span className="text-blue-400 font-bold">{formatCurrency(priceEstimate)}</span>
                 </div>
             </div>
 
@@ -218,7 +218,7 @@ export default function CustomerCheckIn() {
         <div className="min-h-screen bg-black text-white p-6 flex flex-col items-center justify-center">
             <div className="w-full max-w-md">
                 <header className="flex items-center justify-center mb-8 gap-3">
-                    <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center font-bold text-black font-mono">N</div>
+                    <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-lg flex items-center justify-center font-bold text-white font-mono">N</div>
                     <span className="text-xl font-bold tracking-tight">NOMAD</span>
                 </header>
 

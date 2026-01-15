@@ -9,7 +9,7 @@ export default function Sidebar() {
     return (
         <aside className="fixed left-4 top-4 bottom-4 w-16 rounded-2xl bg-secondary/70 backdrop-blur-xl border border-light/50 flex flex-col items-center py-6 gap-8 z-50 shadow-lg shadow-stone-200/40 dark:shadow-black/40">
             {/* Logo */}
-            <div className="p-3 bg-gradient-to-br from-orange-500/20 to-amber-500/10 rounded-xl text-orange-500 border border-orange-200/50 dark:border-orange-700/30 shadow-sm">
+            <div className="p-3 bg-gradient-to-br from-brand-primary/20 to-brand-secondary/10 rounded-xl text-brand-primary border border-brand-primary/30 dark:border-brand-secondary/30 shadow-sm">
                 <Coffee size={24} />
             </div>
 
@@ -45,7 +45,7 @@ function SidebarLink({ to, icon, label }) {
             className={cn(
                 "group relative flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-300",
                 isActive
-                    ? 'bg-orange-100 dark:bg-orange-950 text-orange-600 dark:text-orange-400 shadow-sm border border-orange-200 dark:border-orange-800'
+                    ? 'bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-200 dark:border-blue-800'
                     : 'text-tertiary hover:text-secondary hover:bg-tertiary'
             )}
         >

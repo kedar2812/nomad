@@ -83,7 +83,7 @@ export default function TableCard({ table, onClick }) {
                 {/* Sync Warning */}
                 {isOccupied && session && !session.synced && (
                     <div title="Offline">
-                        <WifiOff className="text-orange-500" size={14} />
+                        <WifiOff className="text-blue-500" size={14} />
                     </div>
                 )}
                 {/* Paused Indicator */}
@@ -147,7 +147,7 @@ export default function TableCard({ table, onClick }) {
                             <span className="font-bold truncate text-sm block">{session.customerName}</span>
                             {/* Order count badge */}
                             {(session.orders?.length || 0) > 0 && (
-                                <span className="text-xs text-orange-600">
+                                <span className="text-xs text-blue-600">
                                     🛒 {session.orders.length} item{session.orders.length > 1 ? 's' : ''}
                                 </span>
                             )}

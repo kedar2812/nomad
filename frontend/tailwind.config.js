@@ -20,10 +20,16 @@ export default {
           light: '#F5F5F7',
         },
         neon: {
-          orange: '#FF6B00',
-          blue: '#00F0FF',
+          blue: '#007FFF',
+          azure: '#2A52BE',
+          cyan: '#00F0FF',
           purple: '#B026FF',
           green: '#00FF94'
+        },
+        // Brand gradient colors - use these for consistent branding
+        brand: {
+          primary: '#007FFF',   // Azure Blue
+          secondary: '#2A52BE', // Royal Blue
         }
       },
       backgroundColor: {
