@@ -3,6 +3,7 @@ import { useOffline } from '../context/OfflineContext';
 import { Download, Upload, CheckCircle, AlertTriangle, Database, Trash2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { db } from '../db/db';
+import * as XLSX from 'xlsx';
 
 export default function Settings() {
     const { exportData, importData, sessions } = useOffline();
@@ -18,16 +19,66 @@ export default function Settings() {
 
     const handleExport = async () => {
         try {
-            const data = await exportData();
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `nomad-backup-${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            // Prepare sessions data for Excel
+            const sessionsData = sessions.map(s => ({
+                'Session ID': s.id,
+                'Customer Name': s.customerName,
+                'Phone': s.phone || '-',
+                'Table ID': s.tableId,
+                'Guests (PAX)': s.pax,
+                'Duration (Hours)': s.duration,
+                'Start Time': new Date(s.startTime).toLocaleString(),
+                'End Time': s.endTime ? new Date(s.endTime).toLocaleString() : '-',
+                'Status': s.status,
+                'Total Orders': s.orders?.length || 0,
+                'Paused': s.isPaused ? 'Yes' : 'No',
+                // Raw data for import reliability
+                '_startTime': s.startTime,
+                '_endTime': s.endTime || '',
+                '_isPaused': s.isPaused,
+                '_pausedAt': s.pausedAt || '',
+                '_totalPausedMs': s.totalPausedMs || 0
+            }));
+
+            // Prepare orders data for Excel
+            const ordersData = [];
+            sessions.forEach(s => {
+                if (s.orders && s.orders.length > 0) {
+                    s.orders.forEach(order => {
+                        ordersData.push({
+                            'Session ID': s.id,
+                            'Customer Name': s.customerName,
+                            'Order ID': order.orderId || order.id, // Handle both structures
+                            'Item Name': order.name,
+                            'Quantity': order.quantity,
+                            'Price': order.price,
+                            'Total': order.quantity * order.price,
+                            'Ordered At': new Date(order.addedAt || order.timestamp).toLocaleString(),
+                            // Raw data
+                            '_addedAt': order.addedAt || order.timestamp,
+                            '_itemId': order.id
+                        });
+                    });
+                }
+            });
+
+            // Create workbook with multiple sheets
+            const wb = XLSX.utils.book_new();
+
+            // Add Sessions sheet
+            const sessionsSheet = XLSX.utils.json_to_sheet(sessionsData);
+            XLSX.utils.book_append_sheet(wb, sessionsSheet, 'Sessions');
+
+            // Add Orders sheet if there are orders
+            if (ordersData.length > 0) {
+                const ordersSheet = XLSX.utils.json_to_sheet(ordersData);
+                XLSX.utils.book_append_sheet(wb, ordersSheet, 'Orders');
+            }
+
+            // Generate and download file
+            const fileName = `nomad-backup-${new Date().toISOString().split('T')[0]}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+
             setExportStatus('success');
             setTimeout(() => setExportStatus(null), 3000);
         } catch (error) {
@@ -39,21 +90,68 @@ export default function Settings() {
 
     const handleImport = async (file) => {
         try {
-            const text = await file.text();
-            const data = JSON.parse(text);
+            const arrayBuffer = await file.arrayBuffer();
+            const wb = XLSX.read(arrayBuffer);
 
-            // Validate structure
-            if (!data.sessions || !Array.isArray(data.sessions)) {
-                throw new Error('Invalid backup file format');
+            // Reconstruct Sessions
+            const sessionsSheet = wb.Sheets['Sessions'];
+            if (!sessionsSheet) throw new Error('Invalid Excel file: Missing "Sessions" sheet');
+
+            const rawSessions = XLSX.utils.sheet_to_json(sessionsSheet);
+
+            // Reconstruct Orders if exists
+            let rawOrders = [];
+            const ordersSheet = wb.Sheets['Orders'];
+            if (ordersSheet) {
+                rawOrders = XLSX.utils.sheet_to_json(ordersSheet);
             }
 
-            if (confirm(`Import ${data.sessions.length} sessions? This will replace all existing data.`)) {
-                await importData(text);
+            // Map back to application data structure
+            const restoredSessions = rawSessions.map(row => {
+                const sessionId = row['Session ID'];
+
+                // Find orders for this session
+                const sessionOrders = rawOrders
+                    .filter(o => o['Session ID'] === sessionId)
+                    .map(o => ({
+                        id: o['_itemId'], // ID of item from menu
+                        orderId: o['Order ID'],
+                        name: o['Item Name'],
+                        quantity: Number(o['Quantity']),
+                        price: Number(o['Price']),
+                        addedAt: o['_addedAt'] || new Date(o['Ordered At']).getTime(),
+                        // Fallback logic for legacy timestamp
+                        timestamp: o['_addedAt'] || new Date(o['Ordered At']).getTime()
+                    }));
+
+                return {
+                    id: sessionId,
+                    customerName: row['Customer Name'],
+                    phone: row['Phone'] === '-' ? '' : row['Phone'],
+                    tableId: row['Table ID'],
+                    pax: Number(row['Guests (PAX)']),
+                    duration: Number(row['Duration (Hours)']),
+                    startTime: row['_startTime'] || new Date(row['Start Time']).getTime(),
+                    endTime: row['_endTime'] || (row['End Time'] !== '-' ? new Date(row['End Time']).getTime() : null),
+                    status: row['Status'],
+                    isPaused: row['_isPaused'] === true || row['_isPaused'] === 'true' || row['Paused'] === 'Yes',
+                    pausedAt: row['_pausedAt'] || null,
+                    totalPausedMs: row['_totalPausedMs'] || 0,
+                    orders: sessionOrders,
+                    synced: false // Mark imported data as unsynced so it gets pushed if backend exists
+                };
+            });
+
+            if (confirm(`Import ${restoredSessions.length} sessions from Excel? This will replace all existing data.`)) {
+                // Convert back to format expected by importData (JSON string)
+                const importPayload = JSON.stringify({ sessions: restoredSessions });
+                await importData(importPayload);
                 setImportStatus('success');
                 setTimeout(() => setImportStatus(null), 3000);
             }
         } catch (error) {
             console.error('Import failed:', error);
+            alert('Import failed: ' + error.message);
             setImportStatus('error');
             setTimeout(() => setImportStatus(null), 3000);
         }
@@ -63,8 +161,29 @@ export default function Settings() {
         e.preventDefault();
         setIsDragging(false);
         const file = e.dataTransfer.files[0];
-        if (file && file.type === 'application/json') {
-            handleImport(file);
+        if (file) {
+            // Check extension
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (ext === 'xlsx' || ext === 'xls' || ext === 'json') {
+                // For JSON legacy support
+                if (ext === 'json') {
+                    // Legacy JSON import...
+                    const reader = new FileReader();
+                    reader.onload = async (e) => {
+                        try {
+                            await importData(e.target.result);
+                            setImportStatus('success');
+                        } catch (err) {
+                            setImportStatus('error');
+                        }
+                    };
+                    reader.readAsText(file);
+                } else {
+                    handleImport(file);
+                }
+            } else {
+                alert('Please upload an Excel (.xlsx) or JSON file');
+            }
         }
     };
 
@@ -88,7 +207,13 @@ export default function Settings() {
     return (
         <div className="max-w-2xl mx-auto space-y-8 animate-fade-in">
             <div>
-                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-500 dark:from-stone-200 dark:to-stone-400 tracking-tight">
+                <h2
+                    className="text-[45px] font-brand font-black bg-clip-text text-transparent tracking-tighter leading-tight pb-1 animate-gradient-x"
+                    style={{
+                        backgroundImage: 'linear-gradient(90deg, #a8a29e, #57534e, #a8a29e, #57534e)',
+                        backgroundSize: '300% 100%',
+                    }}
+                >
                     Settings
                 </h2>
                 <p className="text-tertiary text-sm mt-1">Manage your data and preferences</p>
@@ -121,7 +246,7 @@ export default function Settings() {
                     <Download size={14} /> Export Data
                 </h3>
                 <p className="text-sm text-tertiary mb-4">
-                    Download a complete backup of all sessions and logs as a JSON file.
+                    Download a complete backup of all sessions and logs as an Excel file.
                 </p>
                 <button
                     onClick={handleExport}
@@ -139,7 +264,7 @@ export default function Settings() {
                     ) : exportStatus === 'error' ? (
                         <><AlertTriangle size={18} /> Export Failed</>
                     ) : (
-                        <><Download size={18} /> Download Backup</>
+                        <><Download size={18} /> Download Excel</>
                     )}
                 </button>
             </div>
@@ -160,22 +285,18 @@ export default function Settings() {
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
                     className={cn(
-                        "border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all",
+                        "border-2 border-dashed rounded-2xl p-8 text-center transition-all cursor-pointer group",
                         isDragging
-                            ? "border-blue-500 bg-blue-50"
-                            : importStatus === 'success'
-                                ? "border-emerald-400 bg-emerald-50"
-                                : importStatus === 'error'
-                                    ? "border-red-400 bg-red-50"
-                                    : "border-light hover:border-medium hover:bg-tertiary/50"
+                            ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                            : "border-light hover:border-blue-400 hover:bg-secondary"
                     )}
                 >
                     <input
-                        ref={fileInputRef}
                         type="file"
-                        accept=".json"
-                        onChange={handleFileSelect}
+                        ref={fileInputRef}
+                        accept=".json,.xlsx,.xls"
                         className="hidden"
+                        onChange={handleFileSelect}
                     />
                     {importStatus === 'success' ? (
                         <div className="text-emerald-600">

@@ -45,7 +45,17 @@ export default function CheckInModal({ isOpen, onClose, table }) {
             return;
         }
 
-        if (name) {
+        if (!name || name.length < 3) {
+            setError("Name must be at least 3 characters");
+            return;
+        }
+
+        if (!phone || phone.length < 10) {
+            setError("Phone number must be at least 10 digits");
+            return;
+        }
+
+        if (name && phone) {
             addSession({
                 tableId: table.id,
                 customerName: name,
@@ -126,7 +136,7 @@ export default function CheckInModal({ isOpen, onClose, table }) {
                                             "w-full bg-secondary border border-light rounded-xl py-3 pl-10 pr-4 text-primary placeholder:text-tertiary focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all",
                                             activeUserAlert && "border-yellow-400 focus:ring-yellow-400/30"
                                         )}
-                                        placeholder="Enter name (min 3 chars to search)"
+                                        placeholder="Enter name"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
                                         autoFocus
@@ -135,13 +145,14 @@ export default function CheckInModal({ isOpen, onClose, table }) {
                             </div>
 
                             <div>
-                                <label className="block text-xs font-medium text-secondary mb-1 uppercase tracking-wider">Phone (Optional)</label>
+                                <label className="block text-xs font-medium text-secondary mb-1 uppercase tracking-wider">Phone <span className="text-red-500">*</span></label>
                                 <div className="relative">
                                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-tertiary" size={18} />
                                     <input
                                         type="tel"
+                                        required
                                         className="w-full bg-secondary border border-light rounded-xl py-3 pl-10 pr-4 text-primary placeholder:text-tertiary focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                                        placeholder="Phone Number"
+                                        placeholder="10 digit phone number"
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
                                     />

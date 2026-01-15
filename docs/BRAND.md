@@ -59,18 +59,58 @@ background: linear-gradient(135deg, #007FFF 0%, #2A52BE 100%);
 
 ## Logo Styling
 
+> **⚠️ IMPORTANT**: Every reference to NOMAD must use this exact styling with the live animated gradient effect.
+
 ### Header Logo (45px)
 ```jsx
-<h1 className="text-[45px] font-brand font-black bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent tracking-tighter leading-none">
+<h1 
+  className="text-[45px] font-brand font-black bg-clip-text text-transparent tracking-tighter leading-none animate-gradient-x"
+  style={{
+    backgroundImage: 'linear-gradient(90deg, #007FFF, #2A52BE, #007FFF, #2A52BE)',
+    backgroundSize: '300% 100%',
+  }}
+>
   NOMAD
 </h1>
 ```
 
 ### Compact Logo (24px)
 ```jsx
-<span className="text-2xl font-brand font-black tracking-tighter">
+<span 
+  className="text-2xl font-brand font-black bg-clip-text text-transparent tracking-tighter animate-gradient-x"
+  style={{
+    backgroundImage: 'linear-gradient(90deg, #007FFF, #2A52BE, #007FFF, #2A52BE)',
+    backgroundSize: '300% 100%',
+  }}
+>
   NOMAD
 </span>
+```
+
+---
+
+## Live Animation Effect
+
+The NOMAD brand name features a **live animated gradient** that creates a shifting shimmer effect.
+
+| Property | Value |
+|:---|:---|
+| **Animation** | `animate-gradient-x` |
+| **Duration** | 3 seconds (infinite loop) |
+| **Effect** | Gradient position shifts left-to-right |
+| **Background Size** | 300% 100% |
+
+**Tailwind Config (already added):**
+```javascript
+animation: {
+  'gradient-x': 'gradient-x 3s ease infinite',
+},
+keyframes: {
+  'gradient-x': {
+    '0%, 100%': { backgroundPosition: '0% 50%' },
+    '50%': { backgroundPosition: '100% 50%' },
+  }
+}
 ```
 
 ---
