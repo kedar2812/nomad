@@ -1,0 +1,18 @@
+{
+    "name": "nomad-backend",
+    "version": "0.0.0",
+    "description": "Backend API for nomad book cafe management system",
+    "private": true,
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "keywords": [
+        "nomad",
+        "backend",
+        "api"
+    ],
+    "author": "",
+    "license": "ISC"
+}

@@ -188,7 +188,7 @@ export default function CheckInModal({ isOpen, onClose, table }) {
                             className={cn(
                                 "w-full py-4 rounded-xl font-bold text-white transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed",
                                 activeUserAlert
-                                    ? "bg-stone-300 text-stone-500"
+                                    ? "bg-stone-300 dark:bg-stone-800 text-stone-500 dark:text-stone-400"
                                     : "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 shadow-lg"
                             )}
                         >

@@ -176,7 +176,7 @@ export default function CustomerCheckIn() {
                 <button
                     onClick={handleConfirm}
                     disabled={!selectedTableId}
-                    className="flex-[2] bg-white text-black font-bold py-4 rounded-xl shadow-lg disabled:opacity-50 transition-all active:scale-95"
+                    className="flex-[2] bg-white text-black dark:bg-stone-200 dark:text-black font-bold py-4 rounded-xl shadow-lg disabled:opacity-50 transition-all active:scale-95"
                 >
                     Confirm Check-In
                 </button>

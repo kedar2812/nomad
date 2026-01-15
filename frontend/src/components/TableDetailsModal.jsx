@@ -187,14 +187,14 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
 
                             {/* Current Orders List */}
                             {(session.orders?.length || 0) > 0 && (
-                                <div className="bg-stone-50 rounded-xl p-4 border border-stone-200">
+                                <div className="bg-tertiary/50 rounded-xl p-4 border border-light">
                                     <h4 className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-3">Current Orders</h4>
                                     <div className="space-y-2 max-h-32 overflow-y-auto">
                                         {session.orders.map((order) => (
                                             <div key={order.orderId} className="flex justify-between items-center text-sm">
-                                                <span className="text-stone-800">{order.emoji} {order.name}</span>
+                                                <span className="text-primary">{order.emoji} {order.name}</span>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-stone-500">{formatCurrency(order.price)}</span>
+                                                    <span className="text-tertiary">{formatCurrency(order.price)}</span>
                                                     <button
                                                         onClick={() => handleRemoveItem(order.orderId)}
                                                         className="text-red-500 hover:text-red-600 p-1"
@@ -225,7 +225,7 @@ export default function TableDetailsModal({ isOpen, onClose, table }) {
                                                         "flex flex-col items-center p-3 rounded-xl border transition-all",
                                                         count > 0
                                                             ? "bg-orange-100 border-orange-300 text-orange-700"
-                                                            : "bg-white border-stone-200 text-stone-700 hover:border-orange-300"
+                                                            : "bg-secondary border-light text-secondary hover:border-orange-300 shadow-sm"
                                                     )}
                                                 >
                                                     <span className="text-2xl mb-1">{item.emoji}</span>

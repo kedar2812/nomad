@@ -145,11 +145,11 @@ export default function Settings() {
             </div>
 
             {/* Import Section */}
-            <div className="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm">
-                <h3 className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-secondary rounded-2xl p-6 border border-light shadow-sm">
+                <h3 className="text-xs font-bold text-secondary uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Upload size={14} /> Import Data
                 </h3>
-                <p className="text-sm text-stone-500 mb-4">
+                <p className="text-sm text-tertiary mb-4">
                     Restore from a previously exported JSON backup file.
                 </p>
 
@@ -167,7 +167,7 @@ export default function Settings() {
                                 ? "border-emerald-400 bg-emerald-50"
                                 : importStatus === 'error'
                                     ? "border-red-400 bg-red-50"
-                                    : "border-stone-200 hover:border-stone-300 hover:bg-stone-50"
+                                    : "border-light hover:border-medium hover:bg-tertiary/50"
                     )}
                 >
                     <input
@@ -189,26 +189,26 @@ export default function Settings() {
                             <p className="text-xs mt-1">Invalid file format</p>
                         </div>
                     ) : (
-                        <div className="text-stone-500">
+                        <div className="text-tertiary">
                             <Upload size={32} className="mx-auto mb-2 opacity-50" />
                             <p className="font-medium">Drop JSON file here</p>
-                            <p className="text-xs text-stone-400 mt-1">or click to browse</p>
+                            <p className="text-xs text-tertiary mt-1">or click to browse</p>
                         </div>
                     )}
                 </div>
             </div>
 
             {/* Danger Zone */}
-            <div className="bg-red-50 rounded-2xl p-6 border border-red-200">
-                <h3 className="text-xs font-bold text-red-600 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="bg-red-50 dark:bg-red-950/30 rounded-2xl p-6 border border-red-200 dark:border-red-900">
+                <h3 className="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Trash2 size={14} /> Danger Zone
                 </h3>
-                <p className="text-sm text-stone-600 mb-4">
+                <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
                     Permanently delete all data. This action cannot be undone.
                 </p>
                 <button
                     onClick={handleClearData}
-                    className="w-full py-3 rounded-xl font-bold bg-red-100 border border-red-300 text-red-700 hover:bg-red-200 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-xl font-bold bg-red-100 dark:bg-red-900/50 border border-red-300 dark:border-red-800 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900 transition-all flex items-center justify-center gap-2"
                 >
                     <Trash2 size={18} /> Clear All Data
                 </button>
