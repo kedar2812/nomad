@@ -71,7 +71,8 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Outfit', 'Inter', 'sans-serif'], // Assuming these are imported or fallbacks
+        sans: ['Outfit', 'Inter', 'sans-serif'],
+        brand: ['"Archivo Black"', 'sans-serif'], // Official NOMAD brand font
       }
     },
   },
