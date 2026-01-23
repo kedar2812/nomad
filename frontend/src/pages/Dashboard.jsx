@@ -56,7 +56,7 @@ export default function Dashboard() {
             {/* Header */}
             <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
-                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-500 dark:from-stone-200 dark:to-stone-400 tracking-tight">Floor Plan</h2>
+                    <h2 className="text-[45px] font-brand font-black bg-clip-text text-transparent tracking-tighter leading-none animate-gradient-x" style={{ backgroundImage: 'linear-gradient(90deg, #706c67, #57534e, #706c67, #57534e)', backgroundSize: '300% 100%' }}>Floor Plan</h2>
                     <div className="flex items-center gap-3 mt-1 flex-wrap">
                         <span className={cn(
                             "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] font-bold uppercase",
